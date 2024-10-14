@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("teste")
+@RequestMapping("cadastro")
 public class ClientResource {
     @GetMapping
     public String status() {
