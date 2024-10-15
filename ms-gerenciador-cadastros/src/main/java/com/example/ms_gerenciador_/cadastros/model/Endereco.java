@@ -1,6 +1,6 @@
 package com.example.ms_gerenciador_.cadastros.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,7 +30,7 @@ public class Endereco {
 
     @ManyToOne
     @JoinColumn(name = "usuarioId")
-    @JsonManagedReference
+    @JsonBackReference
     private Usuario usuario;
 
 }

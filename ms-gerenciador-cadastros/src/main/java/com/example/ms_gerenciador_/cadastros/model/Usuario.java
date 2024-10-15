@@ -1,6 +1,6 @@
 package com.example.ms_gerenciador_.cadastros.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +29,7 @@ public class Usuario {
     private String senha;
 
     @OneToMany(mappedBy = "usuario")
-    @JsonBackReference
+    @JsonManagedReference
     private List<Endereco> enderecos;
 
 }
