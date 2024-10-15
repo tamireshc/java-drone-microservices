@@ -1,14 +1,8 @@
 package com.example.ms_gerenciador_.cadastros.model;
 
 import com.example.ms_gerenciador_.cadastros.model.enums.StatusDrone;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,8 +13,11 @@ public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String modelo;
+    @Column(nullable = false)
     private String marca;
     private String ano;
+    @Column(nullable = false)
     private StatusDrone status;
 }
