@@ -21,7 +21,7 @@ public class GatewayApplication {
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder
                 .routes()
-                .route(r -> r.path("/register").uri("lb://ms-gerenciador-cadastros"))
+                .route(r -> r.path("/register/**").uri("lb://ms-gerenciador-cadastros"))
                 .build();
     }
 }

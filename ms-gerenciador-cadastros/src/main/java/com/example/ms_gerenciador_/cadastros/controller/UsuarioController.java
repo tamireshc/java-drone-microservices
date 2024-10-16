@@ -11,7 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-@RequestMapping("register")
+@RequestMapping("/register")
 public class UsuarioController {
 
     @Autowired
@@ -22,7 +22,7 @@ public class UsuarioController {
 //        return "ok";
 //    }
 
-    @PostMapping
+    @PostMapping("/user")
     public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@RequestBody Usuario usuario) throws NoSuchAlgorithmException {
 
         UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuario);
@@ -30,7 +30,7 @@ public class UsuarioController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoUsuario.getId()).toUri()).body(novoUsuario);
     }
 
-    @GetMapping()
+    @GetMapping("/user")
     public ResponseEntity<?> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
