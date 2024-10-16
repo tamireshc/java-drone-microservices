@@ -30,8 +30,15 @@ public class UsuarioController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoUsuario.getId()).toUri()).body(novoUsuario);
     }
 
+    @GetMapping("/user/{cpf}")
+    public ResponseEntity<?> buscarUsuarioPorCPF(@PathVariable String cpf) {
+        return ResponseEntity.ok(usuarioService.buscarUsuarioPorCPF(cpf));
+    }
+
     @GetMapping("/user")
     public ResponseEntity<?> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
+
+
 }

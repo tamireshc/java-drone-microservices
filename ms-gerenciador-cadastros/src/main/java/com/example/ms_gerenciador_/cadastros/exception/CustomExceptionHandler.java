@@ -17,6 +17,13 @@ public class CustomExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler(UsuarioNaoExistenteException.class)
+    public ResponseEntity<String> handleUsuarioNaoExistenteException(UsuarioNaoExistenteException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
+
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<String> handlePSQLException(PSQLException exception) {
         return ResponseEntity

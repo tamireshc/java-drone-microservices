@@ -1,7 +1,9 @@
 package com.example.ms_gerenciador_.cadastros.service;
 
 import com.example.ms_gerenciador_.cadastros.dto.UsuarioResponseDTO;
+import com.example.ms_gerenciador_.cadastros.dto.UsuarioResponseEnderecoDTO;
 import com.example.ms_gerenciador_.cadastros.exception.UsuarioExistenteException;
+import com.example.ms_gerenciador_.cadastros.exception.UsuarioNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.model.Usuario;
 import com.example.ms_gerenciador_.cadastros.repository.UsuarioRepository;
 import com.example.ms_gerenciador_.cadastros.utils.HashUtils;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,7 +41,27 @@ public class UsuarioService {
                 .build();
     }
 
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
+    public List<UsuarioResponseEnderecoDTO> listarUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        if(usuarios.isEmpty()){
+            throw new UsuarioNaoExistenteException("Nenhum usuário cadastrado");
+        }
+
+        List<UsuarioResponseEnderecoDTO> usuariosResponseEnderecoDTO = new ArrayList<>();
+
+        for (Usuario usuario : usuarios) {
+            usuariosResponseEnderecoDTO.add(new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario));
+        }
+        return usuariosResponseEnderecoDTO;
+    }
+
+    public UsuarioResponseEnderecoDTO buscarUsuarioPorCPF(String cpf) {
+
+        Usuario usuario = usuarioRepository.getByCpf(cpf);
+        if (usuario == null) {
+            throw new UsuarioNaoExistenteException("Usuário não encontrado");
+        }
+        return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario);
     }
 }
