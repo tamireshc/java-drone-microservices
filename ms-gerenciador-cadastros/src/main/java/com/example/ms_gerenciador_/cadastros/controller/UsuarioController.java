@@ -23,7 +23,13 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@RequestBody Usuario usuario) throws NoSuchAlgorithmException {
 
         UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuario);
-        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(novoUsuario.getId()).toUri()).body(novoUsuario);
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{id}").
+                        buildAndExpand(novoUsuario.getId())
+                        .toUri())
+                .body(novoUsuario);
     }
 
     @GetMapping("/user/cpf/{cpf}")
