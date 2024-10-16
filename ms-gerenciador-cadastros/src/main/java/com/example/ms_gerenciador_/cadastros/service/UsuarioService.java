@@ -37,6 +37,8 @@ public class UsuarioService {
         return UsuarioResponseDTO.builder()
                 .id(usuarioResponse.getId())
                 .nome(usuarioResponse.getNome())
+                .sobrenome(usuarioResponse.getSobrenome())
+                .telefone(usuarioResponse.getTelefone())
                 .email(usuarioResponse.getEmail())
                 .build();
     }
@@ -44,14 +46,15 @@ public class UsuarioService {
     public List<UsuarioResponseEnderecoDTO> listarUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
 
-        if(usuarios.isEmpty()){
+        if (usuarios.isEmpty()) {
             throw new UsuarioNaoExistenteException("Nenhum usuário cadastrado");
         }
 
         List<UsuarioResponseEnderecoDTO> usuariosResponseEnderecoDTO = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
-            usuariosResponseEnderecoDTO.add(new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario));
+            usuariosResponseEnderecoDTO.add(
+                    new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario));
         }
         return usuariosResponseEnderecoDTO;
     }
@@ -72,5 +75,22 @@ public class UsuarioService {
             throw new UsuarioNaoExistenteException("Usuário não encontrado");
         }
         return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario);
+    }
+
+    @Transactional
+    public void editarUsuario(String id, Usuario usuario) throws NoSuchAlgorithmException {
+        Usuario usuarioExistente = usuarioRepository.getById(Long.parseLong(id));
+
+        if (usuarioExistente == null) throw new UsuarioNaoExistenteException("Usuário não encontrado");
+
+        if (usuario.getNome() != null) usuarioExistente.setNome(usuario.getNome());
+        if (usuario.getSobrenome() != null) usuarioExistente.setSobrenome(usuario.getSobrenome());
+        if (usuario.getEmail() != null) usuarioExistente.setEmail(usuario.getEmail());
+        if (usuario.getCpf() != null) usuarioExistente.setCpf(usuario.getCpf());
+        if (usuario.getTelefone() != null) usuarioExistente.setTelefone(usuario.getTelefone());
+        if (usuario.getSenha() != null)
+            usuarioExistente.setSenha(HashUtils.gerarHashSenha(usuario.getSenha(), "SHA-256"));
+
+        usuarioRepository.save(usuarioExistente);
     }
 }

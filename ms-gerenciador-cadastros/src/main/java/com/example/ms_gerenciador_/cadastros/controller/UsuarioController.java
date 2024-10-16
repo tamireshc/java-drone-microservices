@@ -41,5 +41,10 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 
+    @PutMapping("/user/{id}")
+    public ResponseEntity atualizarUsuario(@PathVariable String id, @RequestBody Usuario usuario) throws NoSuchAlgorithmException {
+        usuarioService.editarUsuario(id, usuario);
+        return ResponseEntity.ok().build();
+    }
 
 }

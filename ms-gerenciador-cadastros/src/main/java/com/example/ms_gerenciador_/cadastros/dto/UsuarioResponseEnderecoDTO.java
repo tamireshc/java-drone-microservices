@@ -14,10 +14,18 @@ import java.util.List;
 public class UsuarioResponseEnderecoDTO {
     private Long id;
     private String nome;
+    private String sobrenome;
+    private String Telefone;
     private String email;
     private List<Endereco> enderecos;
 
     public UsuarioResponseEnderecoDTO converterUsuarioparaUsuarioResponseDTO(Usuario usuario) {
-        return new UsuarioResponseEnderecoDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getEnderecos());
+        return new UsuarioResponseEnderecoDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getSobrenome(),
+                usuario.getTelefone(),
+                usuario.getEmail(),
+                usuario.getEnderecos());
     }
 }
