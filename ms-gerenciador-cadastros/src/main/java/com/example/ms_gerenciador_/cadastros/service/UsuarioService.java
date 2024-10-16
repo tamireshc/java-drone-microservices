@@ -64,4 +64,13 @@ public class UsuarioService {
         }
         return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario);
     }
+
+    public UsuarioResponseEnderecoDTO buscarUsuarioPorId(String id) {
+
+        Usuario usuario = usuarioRepository.getById(Long.parseLong(id));
+        if (usuario == null) {
+            throw new UsuarioNaoExistenteException("Usuário não encontrado");
+        }
+        return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario);
+    }
 }
