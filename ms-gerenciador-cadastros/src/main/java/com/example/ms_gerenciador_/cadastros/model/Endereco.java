@@ -23,7 +23,7 @@ public class Endereco {
     private String cidade;
     @Column(nullable = false)
     private String estado;
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false, columnDefinition = "VARCHAR(9) CHECK (cep ~ ^\\d{5}-\\d{3}$')" )
     private String cep;
     private String latitude;
     private String longitude;

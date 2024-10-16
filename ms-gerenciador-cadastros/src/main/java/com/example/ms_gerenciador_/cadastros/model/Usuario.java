@@ -19,9 +19,9 @@ public class Usuario {
     private String nome;
     @Column(nullable = false)
     private String sobrenome;
-    @Column(nullable = false, unique = true, length = 11)
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(14) CHECK (cpf ~ '^([0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}\\-?[0-9]{2}|[0-9]{11})$')")
     private String cpf;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(255) CHECK (email LIKE '%_@_%._%')")
     private String email;
     @Column(nullable = false)
     private String telefone;
