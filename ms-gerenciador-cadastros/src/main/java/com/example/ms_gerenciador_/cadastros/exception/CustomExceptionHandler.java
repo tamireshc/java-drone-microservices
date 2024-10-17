@@ -30,4 +30,11 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.FORBIDDEN)
                 .body("Email, CPF ou CEP no formato incorreto");
     }
+
+    @ExceptionHandler(StatusInvalidoException.class)
+    public ResponseEntity<String> handleStatusInvalidoException(StatusInvalidoException exception) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(exception.getMessage());
+    }
 }
