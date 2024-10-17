@@ -2,6 +2,7 @@ package com.example.ms_gerenciador_.cadastros.service;
 
 import com.example.ms_gerenciador_.cadastros.dto.UsuarioResponseDTO;
 import com.example.ms_gerenciador_.cadastros.dto.UsuarioResponseEnderecoDTO;
+import com.example.ms_gerenciador_.cadastros.exception.EdicaoNaoPermitidaException;
 import com.example.ms_gerenciador_.cadastros.exception.UsuarioExistenteException;
 import com.example.ms_gerenciador_.cadastros.exception.UsuarioNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.model.Usuario;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -22,7 +24,6 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO cadastrarUsuario(Usuario usuario) throws NoSuchAlgorithmException {
-
         Usuario usuarioEmailExistente = usuarioRepository.getByEmail(usuario.getEmail());
         Usuario usuarioCPFExistente = usuarioRepository.getByCpf(usuario.getCpf());
 
@@ -49,48 +50,52 @@ public class UsuarioService {
         if (usuarios.isEmpty()) {
             throw new UsuarioNaoExistenteException("Nenhum usuário cadastrado");
         }
-
         List<UsuarioResponseEnderecoDTO> usuariosResponseEnderecoDTO = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
             usuariosResponseEnderecoDTO.add(
-                    new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario));
+                    new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(Optional.ofNullable(usuario)));
         }
         return usuariosResponseEnderecoDTO;
     }
 
     public UsuarioResponseEnderecoDTO buscarUsuarioPorCPF(String cpf) {
-
         Usuario usuario = usuarioRepository.getByCpf(cpf);
         if (usuario == null) {
             throw new UsuarioNaoExistenteException("Usuário não encontrado");
         }
-        return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario);
+        return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(Optional.of(usuario));
     }
 
     public UsuarioResponseEnderecoDTO buscarUsuarioPorId(String id) {
 
-        Usuario usuario = usuarioRepository.getById(Long.parseLong(id));
-        if (usuario == null) {
+        Optional<Usuario> usuario = usuarioRepository.findById(Long.parseLong(id));
+        if (usuario.isEmpty()) {
             throw new UsuarioNaoExistenteException("Usuário não encontrado");
         }
         return new UsuarioResponseEnderecoDTO().converterUsuarioparaUsuarioResponseDTO(usuario);
     }
 
     @Transactional
-    public void editarUsuario(String id, Usuario usuario) throws NoSuchAlgorithmException {
-        Usuario usuarioExistente = usuarioRepository.getById(Long.parseLong(id));
+    public UsuarioResponseDTO editarUsuario(String id, Usuario usuario) throws NoSuchAlgorithmException {
+        Optional<Usuario> usuarioExistente = usuarioRepository.findById(Long.parseLong(id));
 
-        if (usuarioExistente == null) throw new UsuarioNaoExistenteException("Usuário não encontrado");
+        if (usuarioExistente.isEmpty()) {
+            throw new UsuarioNaoExistenteException("Usuário não encontrado");
+        } else {
+            if (!usuarioExistente.get().getCpf().equals(usuario.getCpf())) {
+                throw new EdicaoNaoPermitidaException("Edição não permitida");
+            }
+            if (usuario.getNome() != null) usuarioExistente.get().setNome(usuario.getNome());
+            if (usuario.getSobrenome() != null) usuarioExistente.get().setSobrenome(usuario.getSobrenome());
+            if (usuario.getEmail() != null) usuarioExistente.get().setEmail(usuario.getEmail());
+            if (usuario.getTelefone() != null) usuarioExistente.get().setTelefone(usuario.getTelefone());
+            if (usuario.getSenha() != null)
+                usuarioExistente.get().setSenha(HashUtils.gerarHashSenha(usuario.getSenha(), "SHA-256"));
 
-        if (usuario.getNome() != null) usuarioExistente.setNome(usuario.getNome());
-        if (usuario.getSobrenome() != null) usuarioExistente.setSobrenome(usuario.getSobrenome());
-        if (usuario.getEmail() != null) usuarioExistente.setEmail(usuario.getEmail());
-        if (usuario.getCpf() != null) usuarioExistente.setCpf(usuario.getCpf());
-        if (usuario.getTelefone() != null) usuarioExistente.setTelefone(usuario.getTelefone());
-        if (usuario.getSenha() != null)
-            usuarioExistente.setSenha(HashUtils.gerarHashSenha(usuario.getSenha(), "SHA-256"));
+            Usuario usuarioResponse = usuarioRepository.save((Usuario) usuarioExistente.get());
 
-        usuarioRepository.save(usuarioExistente);
+            return new UsuarioResponseDTO().converterUsuarioparaUsuarioResponseDTO(usuarioResponse);
+        }
     }
 }

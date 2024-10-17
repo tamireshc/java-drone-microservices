@@ -35,4 +35,11 @@ public class DroneService {
         }
         return droneRepository.findByStatus(StatusDrone.valueOf(status.toUpperCase()));
     }
+
+    @Transactional
+    public Drone alterarStatusDrone(String id, String status) {
+        Drone drone = buscarDronePorId(id);
+        drone.setStatus(StatusDrone.valueOf(status.toUpperCase()));
+        return droneRepository.save(drone);
+    }
 }

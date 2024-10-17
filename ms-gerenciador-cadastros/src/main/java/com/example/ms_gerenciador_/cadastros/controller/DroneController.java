@@ -1,7 +1,6 @@
 package com.example.ms_gerenciador_.cadastros.controller;
 
 import com.example.ms_gerenciador_.cadastros.model.Drone;
-import com.example.ms_gerenciador_.cadastros.repository.DroneRepository;
 import com.example.ms_gerenciador_.cadastros.service.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +42,11 @@ public class DroneController {
     @GetMapping("/drone/status/{status}")
     public ResponseEntity<List<Drone>> listarDronesPorStatus(@PathVariable String status) {
         return ResponseEntity.ok(droneService.listarDronesPorStatus(status));
+    }
+
+    @PutMapping("/drone/{id}/status/{status}")
+    public ResponseEntity<Drone> alterarStatusDrone(@PathVariable String id, @PathVariable String status) {
+        Drone drone = droneService.alterarStatusDrone(id, status);
+        return ResponseEntity.ok(drone);
     }
 }

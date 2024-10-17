@@ -5,6 +5,7 @@ import com.example.ms_gerenciador_.cadastros.model.Usuario;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -19,13 +20,13 @@ public class UsuarioResponseEnderecoDTO {
     private String email;
     private List<Endereco> enderecos;
 
-    public UsuarioResponseEnderecoDTO converterUsuarioparaUsuarioResponseDTO(Usuario usuario) {
+    public UsuarioResponseEnderecoDTO converterUsuarioparaUsuarioResponseDTO(Optional<Usuario> usuario) {
         return new UsuarioResponseEnderecoDTO(
-                usuario.getId(),
-                usuario.getNome(),
-                usuario.getSobrenome(),
-                usuario.getTelefone(),
-                usuario.getEmail(),
-                usuario.getEnderecos());
+                usuario.get().getId(),
+                usuario.get().getNome(),
+                usuario.get().getSobrenome(),
+                usuario.get().getTelefone(),
+                usuario.get().getEmail(),
+                usuario.get().getEnderecos());
     }
 }

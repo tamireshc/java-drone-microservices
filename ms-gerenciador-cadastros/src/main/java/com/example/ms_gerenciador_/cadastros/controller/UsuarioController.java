@@ -24,11 +24,11 @@ public class UsuarioController {
 
         UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuario);
         return ResponseEntity.created(
-                ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}").
-                        buildAndExpand(novoUsuario.getId())
-                        .toUri())
+                        ServletUriComponentsBuilder
+                                .fromCurrentRequest()
+                                .path("/{id}").
+                                buildAndExpand(novoUsuario.getId())
+                                .toUri())
                 .body(novoUsuario);
     }
 
@@ -48,9 +48,9 @@ public class UsuarioController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity atualizarUsuario(@PathVariable String id, @RequestBody Usuario usuario) throws NoSuchAlgorithmException {
-        usuarioService.editarUsuario(id, usuario);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable String id, @RequestBody Usuario usuario) throws NoSuchAlgorithmException {
+        UsuarioResponseDTO usuarioResponse = usuarioService.editarUsuario(id, usuario);
+        return ResponseEntity.ok(usuarioResponse);
     }
 
 }

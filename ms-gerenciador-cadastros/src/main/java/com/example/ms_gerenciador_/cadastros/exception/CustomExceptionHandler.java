@@ -37,4 +37,11 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.FORBIDDEN)
                 .body(exception.getMessage());
     }
+
+    @ExceptionHandler(EdicaoNaoPermitidaException.class)
+    public ResponseEntity<String> handleEdicaoNaoPermitidaException(EdicaoNaoPermitidaException exception) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(exception.getMessage());
+    }
 }
