@@ -1,4 +1,4 @@
-package com.example.ms_gerenciador_.cadastros;
+package com.example.ms_gerenciador_.cadastros.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -66,7 +66,6 @@ public class RabbitMQConfiguration {
     }
 
     //binding do exchanged Pendente para as filas de endereco pendente
-
     @Bean
     public Binding criarBindingEnderecoPendeteMsGerenciadorCadastro() {
         return BindingBuilder.bind(criarFilaEnderecoPendente())

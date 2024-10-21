@@ -20,11 +20,13 @@ public class EnderecoService {
     private EnderecoRepository enderecoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private LatitudeLongitudeService latitudeLongitudeService;
 
     @Transactional
     public Endereco cadastrarEndereco(EnderecoRequestDTO enderecoRequestDTO) {
         Optional<Usuario> usuario = usuarioRepository.findById(Long.parseLong(enderecoRequestDTO.getUsuarioId()));
-        if(usuario.isEmpty()) {
+        if (usuario.isEmpty()) {
             throw new UsuarioNaoExistenteException("Usuário não encontrado");
         }
         Endereco novoEndereco = new Endereco();
@@ -36,6 +38,12 @@ public class EnderecoService {
         novoEndereco.setCidade(enderecoRequestDTO.getCidade());
         novoEndereco.setEstado(enderecoRequestDTO.getEstado());
         novoEndereco.setUsuario(usuario.get());
+
+        try {
+            latitudeLongitudeService.sendEndereco(novoEndereco, "endereco-pendente.ex");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
 
         return enderecoRepository.save(novoEndereco);
     }
