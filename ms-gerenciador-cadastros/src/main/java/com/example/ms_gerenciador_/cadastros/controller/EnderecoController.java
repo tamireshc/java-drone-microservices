@@ -5,10 +5,7 @@ import com.example.ms_gerenciador_.cadastros.model.Endereco;
 import com.example.ms_gerenciador_.cadastros.service.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
@@ -28,5 +25,11 @@ public class EnderecoController {
                                 .buildAndExpand(enderecoResponse.getId())
                                 .toUri())
                 .body(enderecoResponse);
+    }
+
+    @GetMapping("/endereco/{id}")
+    public ResponseEntity<Endereco> buscarEnderecoPorId(@PathVariable Long id) {
+        Endereco endereco = enderecoService.buscarEnderecoPorId(id);
+        return ResponseEntity.ok(endereco);
     }
 }

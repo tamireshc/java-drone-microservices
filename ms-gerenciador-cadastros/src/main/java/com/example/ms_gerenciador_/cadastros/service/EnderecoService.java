@@ -48,4 +48,8 @@ public class EnderecoService {
         return enderecoRepository.save(novoEndereco);
     }
 
+    public Endereco buscarEnderecoPorId(Long id) {
+        return enderecoRepository.findById(id).orElse(null);
+    }
+
 }
