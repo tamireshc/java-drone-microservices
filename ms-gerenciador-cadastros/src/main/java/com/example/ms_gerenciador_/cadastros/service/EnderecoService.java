@@ -40,13 +40,15 @@ public class EnderecoService {
         novoEndereco.setEstado(enderecoRequestDTO.getEstado());
         novoEndereco.setUsuario(usuario.get());
 
+        Endereco enderecoCadastrado = enderecoRepository.save(novoEndereco);
+
         try {
-            latitudeLongitudeService.sendEndereco(novoEndereco, "endereco-pendente.ex");
+            latitudeLongitudeService.sendEndereco(enderecoCadastrado, "endereco-pendente.ex");
         } catch (Exception exception) {
             exception.printStackTrace();
         }
 
-        return enderecoRepository.save(novoEndereco);
+        return enderecoCadastrado;
     }
 
     public Endereco buscarEnderecoPorId(Long id) {
@@ -75,5 +77,22 @@ public class EnderecoService {
             throw new EnderecoNaoExistenteException("Endereço não encontrado");
         }
         enderecoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Endereco editarEndereco(Long id, Endereco endereco) {
+        Endereco enderecoExistente = buscarEnderecoPorId(id);
+
+        if (endereco.getLogradouro() != null) enderecoExistente.setLogradouro(endereco.getLogradouro());
+        if (endereco.getNumero() > 0) enderecoExistente.setNumero(endereco.getNumero());
+        if (endereco.getComplemento() != null) enderecoExistente.setComplemento(endereco.getComplemento());
+        if (endereco.getBairro() != null) enderecoExistente.setBairro(endereco.getBairro());
+        if (endereco.getCidade() != null) enderecoExistente.setCidade(endereco.getCidade());
+        if (endereco.getEstado() != null) enderecoExistente.setEstado(endereco.getEstado());
+        if (endereco.getCep() != null) enderecoExistente.setCep(endereco.getCep());
+        if (endereco.getLatitude() != null) enderecoExistente.setLatitude(endereco.getLatitude());
+        if (endereco.getLongitude() != null) enderecoExistente.setLongitude(endereco.getLongitude());
+
+        return enderecoRepository.save(enderecoExistente);
     }
 }
