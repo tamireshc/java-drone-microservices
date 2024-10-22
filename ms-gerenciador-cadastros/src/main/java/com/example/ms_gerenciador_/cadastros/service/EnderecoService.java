@@ -1,7 +1,6 @@
 package com.example.ms_gerenciador_.cadastros.service;
 
 import com.example.ms_gerenciador_.cadastros.dto.EnderecoRequestDTO;
-import com.example.ms_gerenciador_.cadastros.dto.UsuarioResponseEnderecoDTO;
 import com.example.ms_gerenciador_.cadastros.exception.EnderecoNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.exception.UsuarioNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.model.Endereco;
@@ -51,7 +50,11 @@ public class EnderecoService {
     }
 
     public Endereco buscarEnderecoPorId(Long id) {
-        return enderecoRepository.findById(id).orElse(null);
+        Endereco endereco = enderecoRepository.findById(id).orElse(null);
+        if (endereco == null) {
+            throw new EnderecoNaoExistenteException("Endereço não encontrado");
+        }
+        return endereco;
     }
 
     public List<Endereco> buscarEnderecosPorUsuarioId(Long id) {
@@ -68,7 +71,7 @@ public class EnderecoService {
 
     public void deletarEndereco(Long id) {
         Endereco endereco = buscarEnderecoPorId(id);
-        if(endereco == null){
+        if (endereco == null) {
             throw new EnderecoNaoExistenteException("Endereço não encontrado");
         }
         enderecoRepository.deleteById(id);
