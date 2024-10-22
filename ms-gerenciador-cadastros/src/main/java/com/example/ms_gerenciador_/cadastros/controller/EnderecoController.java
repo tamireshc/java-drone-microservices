@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/register")
 public class EnderecoController {
@@ -31,5 +33,21 @@ public class EnderecoController {
     public ResponseEntity<Endereco> buscarEnderecoPorId(@PathVariable Long id) {
         Endereco endereco = enderecoService.buscarEnderecoPorId(id);
         return ResponseEntity.ok(endereco);
+    }
+
+    @GetMapping("/endereco/usuario/{id}")
+    public ResponseEntity<List<Endereco>> buscarEnderecosPorUsuarioId(@PathVariable Long id) {
+        return ResponseEntity.ok(enderecoService.buscarEnderecosPorUsuarioId(id));
+    }
+
+    @GetMapping("/endereco")
+    public ResponseEntity<List<Endereco>> listarEnderecos() {
+        return ResponseEntity.ok(enderecoService.listarEnderecos());
+    }
+
+    @DeleteMapping("/endereco/{id}")
+    public ResponseEntity<String> deletarEndereco(@PathVariable Long id) {
+        enderecoService.deletarEndereco(id);
+        return ResponseEntity.ok("Endereço deletado com sucesso");
     }
 }

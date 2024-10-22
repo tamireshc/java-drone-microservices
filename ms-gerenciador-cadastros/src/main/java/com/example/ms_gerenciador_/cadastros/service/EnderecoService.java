@@ -2,6 +2,7 @@ package com.example.ms_gerenciador_.cadastros.service;
 
 import com.example.ms_gerenciador_.cadastros.dto.EnderecoRequestDTO;
 import com.example.ms_gerenciador_.cadastros.dto.UsuarioResponseEnderecoDTO;
+import com.example.ms_gerenciador_.cadastros.exception.EnderecoNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.exception.UsuarioNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.model.Endereco;
 import com.example.ms_gerenciador_.cadastros.model.Usuario;
@@ -11,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,4 +54,23 @@ public class EnderecoService {
         return enderecoRepository.findById(id).orElse(null);
     }
 
+    public List<Endereco> buscarEnderecosPorUsuarioId(Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isEmpty()) {
+            throw new UsuarioNaoExistenteException("Usuário não encontrado");
+        }
+        return enderecoRepository.findByUsuarioId(id);
+    }
+
+    public List<Endereco> listarEnderecos() {
+        return enderecoRepository.findAll();
+    }
+
+    public void deletarEndereco(Long id) {
+        Endereco endereco = buscarEnderecoPorId(id);
+        if(endereco == null){
+            throw new EnderecoNaoExistenteException("Endereço não encontrado");
+        }
+        enderecoRepository.deleteById(id);
+    }
 }

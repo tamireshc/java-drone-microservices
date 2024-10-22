@@ -44,4 +44,11 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.FORBIDDEN)
                 .body(exception.getMessage());
     }
+
+    @ExceptionHandler(EnderecoNaoExistenteException.class)
+    public ResponseEntity<String> handleEnderecoNaoExistenteException(EnderecoNaoExistenteException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
 }
