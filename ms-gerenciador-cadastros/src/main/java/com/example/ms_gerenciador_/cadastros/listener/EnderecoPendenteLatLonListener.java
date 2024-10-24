@@ -9,6 +9,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.transaction.Transactional;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,8 +22,11 @@ public class EnderecoPendenteLatLonListener {
     EnderecoService enderecoService;
     @Autowired
     EnviarParaFilaService latitudeLongitudeService;
+    @Value("${rabbitmq.enderecopendente.exchangeDLQ}")
+    private String enchangedEnderecoPendenteDLQ;
+    private static final String queueEnderecoPendente = "${rabbitmq.enderecopendente.queue}";
 
-    @RabbitListener(queues = "endereco-pendente.ms-gereciadorcadastro")
+    @RabbitListener(queues = queueEnderecoPendente)
     @Transactional
     public void completarEnderecoComLatitudeLongitude(Endereco endereco) {
         FetchLatitudeLongitudeApi fetchLatitudeLongitudeApi = new FetchLatitudeLongitudeApi(latitudeLongitudeService);
@@ -30,10 +34,9 @@ public class EnderecoPendenteLatLonListener {
         try {
             endereco.setLatitude(latitudeLongitudeDTO.getLatitude());
             endereco.setLongitude(latitudeLongitudeDTO.getLongitude());
-
             Endereco enderecoAtualizado = enderecoService.editarEndereco(endereco.getId(), endereco);
         } catch (Exception e) {
-            latitudeLongitudeService.enviarEnderecoParaFila(endereco, "endereco-pendente-DLQ.ex");
+            latitudeLongitudeService.enviarEnderecoParaFila(endereco, enchangedEnderecoPendenteDLQ);
         }
     }
 }
