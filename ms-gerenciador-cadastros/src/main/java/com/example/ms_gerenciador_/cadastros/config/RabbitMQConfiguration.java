@@ -20,6 +20,10 @@ public class RabbitMQConfiguration {
     private String enchangedEnderecoPendente;
     @Value("${rabbitmq.enderecopendente.exchangeDLQ}")
     private String enchangedEnderecoPendenteDLQ;
+    @Value("${rabbitmq.enderecopendente.queue}")
+    private String queueEnderecoPendente;
+    @Value("${rabbitmq.enderecopendente.queueDLQ}")
+    private String queueEnderecoPendenteDLQ;
 
     //o próprio spring cria um @bean do connectionfactory e injeta
     public RabbitMQConfiguration(ConnectionFactory connectionFactory) {
@@ -56,12 +60,12 @@ public class RabbitMQConfiguration {
     //filas
     @Bean
     public Queue criarFilaEnderecoPendente() {
-        return QueueBuilder.durable("endereco-pendente.ms-gereciadorcadastro").build();
+        return QueueBuilder.durable(queueEnderecoPendente).build();
     }
 
     @Bean
     public Queue criarFilaEnderecoPendenteDLQ() {
-        return QueueBuilder.durable("endereco-pendente.ms-gereciadorcadastro-DLQ").build();
+        return QueueBuilder.durable(queueEnderecoPendenteDLQ).build();
     }
 
     //exchanges
