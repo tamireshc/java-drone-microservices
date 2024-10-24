@@ -1,6 +1,5 @@
 package com.example.ms_gerenciador_.cadastros.dto;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 
 @Getter
@@ -14,5 +13,4 @@ public class EnderecoRequestDTO {
     private String estado;
     private String cep;
     private String usuarioId;
-
 }

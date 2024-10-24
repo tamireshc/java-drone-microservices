@@ -1,7 +1,6 @@
 package com.example.ms_gerenciador_.cadastros.dto;
 
 import com.example.ms_gerenciador_.cadastros.model.Usuario;
-import jdk.jshell.Snippet;
 import lombok.*;
 
 @Getter

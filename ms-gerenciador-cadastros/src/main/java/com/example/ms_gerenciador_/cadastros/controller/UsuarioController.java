@@ -52,5 +52,4 @@ public class UsuarioController {
         UsuarioResponseDTO usuarioResponse = usuarioService.editarUsuario(id, usuario);
         return ResponseEntity.ok(usuarioResponse);
     }
-
 }
