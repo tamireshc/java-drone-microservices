@@ -41,5 +41,4 @@ public class Endereco {
     @JoinColumn(name = "usuarioId")
     @JsonBackReference
     private Usuario usuario;
-
 }
