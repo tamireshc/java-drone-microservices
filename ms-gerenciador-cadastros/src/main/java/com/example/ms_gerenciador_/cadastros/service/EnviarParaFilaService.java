@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LatitudeLongitudeService {
+public class EnviarParaFilaService {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendEndereco(Endereco endereco, String exchange) {
+    public void enviarEnderecoParaFila(Endereco endereco, String exchange) {
         rabbitTemplate.convertAndSend(exchange, "", endereco);
     }
 }

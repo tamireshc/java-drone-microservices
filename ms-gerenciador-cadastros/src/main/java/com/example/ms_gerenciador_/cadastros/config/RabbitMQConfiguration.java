@@ -11,15 +11,15 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class RabbitMQConfiguration {
     private ConnectionFactory connectionFactory;
-    //    rabbitmq.enderecopendente.exchange=endereco-pendente.ex
 
-    //Exchanged
+    //Properties
     @Value("${rabbitmq.enderecopendente.exchange}")
     private String enchangedEnderecoPendente;
+    @Value("${rabbitmq.enderecopendente.exchangeDLQ}")
+    private String enchangedEnderecoPendenteDLQ;
 
     //o próprio spring cria um @bean do connectionfactory e injeta
     public RabbitMQConfiguration(ConnectionFactory connectionFactory) {
@@ -59,10 +59,20 @@ public class RabbitMQConfiguration {
         return QueueBuilder.durable("endereco-pendente.ms-gereciadorcadastro").build();
     }
 
+    @Bean
+    public Queue criarFilaEnderecoPendenteDLQ() {
+        return QueueBuilder.durable("endereco-pendente.ms-gereciadorcadastro-DLQ").build();
+    }
+
     //exchanges
     @Bean
     public FanoutExchange criarFanoutExchangeEnderecoPendente() {
         return ExchangeBuilder.fanoutExchange(enchangedEnderecoPendente).build();
+    }
+
+    @Bean
+    public FanoutExchange criarFanoutExchangeEnderecoPendenteDLQ() {
+        return ExchangeBuilder.fanoutExchange(enchangedEnderecoPendenteDLQ).build();
     }
 
     //binding do exchanged Pendente para as filas de endereco pendente
@@ -70,5 +80,11 @@ public class RabbitMQConfiguration {
     public Binding criarBindingEnderecoPendeteMsGerenciadorCadastro() {
         return BindingBuilder.bind(criarFilaEnderecoPendente())
                 .to(criarFanoutExchangeEnderecoPendente());
+    }
+
+    @Bean
+    public Binding criarBindingEnderecoPendeteMsGerenciadorCadastroDLQ() {
+        return BindingBuilder.bind(criarFilaEnderecoPendenteDLQ())
+                .to(criarFanoutExchangeEnderecoPendenteDLQ());
     }
 }

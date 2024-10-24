@@ -27,7 +27,16 @@ public class Endereco {
     private String cep;
     private String latitude;
     private String longitude;
+    @Transient
+    private int tentativas = 0;
 
+    public void setTentativas(int tentativas) {
+        this.tentativas = tentativas + 1;
+        System.out.println("Tentativas: " + this.tentativas);
+    }
+
+    @Setter
+    @Getter
     @ManyToOne
     @JoinColumn(name = "usuarioId")
     @JsonBackReference

@@ -8,6 +8,7 @@ import com.example.ms_gerenciador_.cadastros.model.Usuario;
 import com.example.ms_gerenciador_.cadastros.repository.EnderecoRepository;
 import com.example.ms_gerenciador_.cadastros.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,9 @@ public class EnderecoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private LatitudeLongitudeService latitudeLongitudeService;
+    private EnviarParaFilaService latitudeLongitudeService;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Transactional
     public Endereco cadastrarEndereco(EnderecoRequestDTO enderecoRequestDTO) {
@@ -43,7 +46,7 @@ public class EnderecoService {
         Endereco enderecoCadastrado = enderecoRepository.save(novoEndereco);
 
         try {
-            latitudeLongitudeService.sendEndereco(enderecoCadastrado, "endereco-pendente.ex");
+            latitudeLongitudeService.enviarEnderecoParaFila(novoEndereco, "endereco-pendente.ex");
         } catch (Exception exception) {
             exception.printStackTrace();
         }
