@@ -6,4 +6,4 @@ ENV POSTGRES_DB gerenciador-cadastros
 
 EXPOSE 5432
 
-#docker run -d -p 5432:5432 --name postegresformsdrone postgresformsdrone
+#docker run -d -p 5432:5432 --name postegresformsdronecadastro postgresformsdronecadastro
