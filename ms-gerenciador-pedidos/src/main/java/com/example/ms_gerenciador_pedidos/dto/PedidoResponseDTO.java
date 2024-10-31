@@ -13,7 +13,7 @@ public class PedidoResponseDTO {
     private LocalDateTime dataEntrega;
     private String status;
     private EnderecoResponseDTO endereco;
-    private UsuarioResponseDTO usuario;
+    private UsuarioResponseDTO remetente;
     private UsuarioResponseDTO destinatario;
     private Long droneId;
 }
