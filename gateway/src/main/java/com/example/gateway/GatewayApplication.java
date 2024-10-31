@@ -22,6 +22,7 @@ public class GatewayApplication {
         return builder
                 .routes()
                 .route(r -> r.path("/register/**").uri("lb://ms-gerenciador-cadastros"))
+                .route(r -> r.path("/order/**").uri("lb://ms-gerenciador-pedidos"))
                 .build();
     }
 }
