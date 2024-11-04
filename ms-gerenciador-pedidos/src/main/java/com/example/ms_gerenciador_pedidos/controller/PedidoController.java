@@ -2,7 +2,7 @@ package com.example.ms_gerenciador_pedidos.controller;
 
 import com.example.ms_gerenciador_pedidos.dto.PedidoResponseDTO;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
-import com.example.ms_gerenciador_pedidos.model.service.PedidoService;
+import com.example.ms_gerenciador_pedidos.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

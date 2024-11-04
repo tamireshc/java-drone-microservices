@@ -1,4 +1,4 @@
-package com.example.ms_gerenciador_pedidos.model.service;
+package com.example.ms_gerenciador_pedidos.service;
 
 import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.PedidoResponseDTO;
