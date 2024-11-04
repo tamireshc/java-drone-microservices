@@ -15,7 +15,7 @@ public class UsuarioResponseEnderecoDTO {
     private String sobrenome;
     private String Telefone;
     private String email;
-    private List<Endereco> enderecos;
+    private List<EnderecoDTO> enderecos;
 
     public UsuarioResponseEnderecoDTO(String serviçoIndisponívelNoMomento) {
     }

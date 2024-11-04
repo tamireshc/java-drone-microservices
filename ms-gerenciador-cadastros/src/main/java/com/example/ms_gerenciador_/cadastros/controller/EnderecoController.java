@@ -17,7 +17,7 @@ public class EnderecoController {
     @Autowired
     private EnderecoService enderecoService;
 
-    @PostMapping("/endereco")
+    @PostMapping("/address")
     public ResponseEntity<Endereco> cadastrarEndereco(@RequestBody EnderecoRequestDTO endereco) {
         Endereco enderecoResponse = enderecoService.cadastrarEndereco(endereco);
         return ResponseEntity.created(
@@ -29,23 +29,23 @@ public class EnderecoController {
                 .body(enderecoResponse);
     }
 
-    @GetMapping("/endereco/{id}")
+    @GetMapping("/address/{id}")
     public ResponseEntity<Endereco> buscarEnderecoPorId(@PathVariable Long id) {
         Endereco endereco = enderecoService.buscarEnderecoPorId(id);
         return ResponseEntity.ok(endereco);
     }
 
-    @GetMapping("/endereco/usuario/{id}")
+    @GetMapping("/address/user/{id}")
     public ResponseEntity<List<Endereco>> buscarEnderecosPorUsuarioId(@PathVariable Long id) {
         return ResponseEntity.ok(enderecoService.buscarEnderecosPorUsuarioId(id));
     }
 
-    @GetMapping("/endereco")
+    @GetMapping("/address")
     public ResponseEntity<List<Endereco>> listarEnderecos() {
         return ResponseEntity.ok(enderecoService.listarEnderecos());
     }
 
-    @DeleteMapping("/endereco/{id}")
+    @DeleteMapping("/address/{id}")
     public ResponseEntity<String> deletarEndereco(@PathVariable Long id) {
         enderecoService.deletarEndereco(id);
         return ResponseEntity.ok("Endereço deletado com sucesso");

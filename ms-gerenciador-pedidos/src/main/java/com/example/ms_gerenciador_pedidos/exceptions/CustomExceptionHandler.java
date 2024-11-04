@@ -19,6 +19,11 @@ public class CustomExceptionHandler {
     public ResponseEntity<String> handleServicoIndisponivelException2(ServicoIndisponivelException ex) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(ex.getMessage());
     }
+
+    @ExceptionHandler(StatusInvalidoException.class)
+    public ResponseEntity<String> handleStatusInvalidoException(StatusInvalidoException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
 }
 
 

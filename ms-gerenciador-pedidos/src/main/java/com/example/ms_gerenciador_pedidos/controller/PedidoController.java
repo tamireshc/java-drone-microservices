@@ -1,5 +1,6 @@
 package com.example.ms_gerenciador_pedidos.controller;
 
+import com.example.ms_gerenciador_pedidos.dto.PedidoRequestDTO;
 import com.example.ms_gerenciador_pedidos.dto.PedidoResponseDTO;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.service.PedidoService;
@@ -18,7 +19,7 @@ public class PedidoController {
     PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<PedidoResponseDTO> cadastrarPedido(@RequestBody Pedido pedido) {
+    public ResponseEntity<PedidoResponseDTO> cadastrarPedido(@RequestBody PedidoRequestDTO pedido) {
         PedidoResponseDTO pedidoResponseDTO = pedidoService.cadastrarPedido(pedido);
         return ResponseEntity.created(
                         ServletUriComponentsBuilder
