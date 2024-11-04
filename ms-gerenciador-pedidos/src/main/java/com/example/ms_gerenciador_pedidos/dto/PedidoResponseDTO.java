@@ -16,4 +16,15 @@ public class PedidoResponseDTO {
     private UsuarioResponseDTO remetente;
     private UsuarioResponseDTO destinatario;
     private Long droneId;
+
+    public PedidoResponseDTO(Long id, LocalDateTime dataPedido, String status,
+                             EnderecoResponseDTO endereco, UsuarioResponseDTO remetente,
+                             UsuarioResponseDTO destinatario) {
+        this.id = id;
+        this.dataPedido = dataPedido;
+        this.status = status;
+        this.endereco = endereco;
+        this.remetente = remetente;
+        this.destinatario = destinatario;
+    }
 }

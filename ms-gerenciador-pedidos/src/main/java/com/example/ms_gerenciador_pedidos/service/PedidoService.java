@@ -11,11 +11,7 @@ import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-
-import java.net.ConnectException;
-import java.net.UnknownHostException;
 
 @Service
 public class PedidoService {
@@ -26,33 +22,27 @@ public class PedidoService {
 
     @Transactional
     public PedidoResponseDTO cadastrarPedido(PedidoRequestDTO pedidoRequestDTO) {
-
         if (!StatusPedido.equals(pedidoRequestDTO.getStatus())) {
             throw new StatusInvalidoException("Status inexistente");
         }
-
         try {
             UsuarioResponseEnderecoDTO remetente = cadastroResourceClient.buscarUsuarioPorId(pedidoRequestDTO.getUsuarioId()).getBody();
             UsuarioResponseEnderecoDTO destinatario = cadastroResourceClient.buscarUsuarioPorId(pedidoRequestDTO.getDestinatarioId()).getBody();
             EnderecoDTO endereco = cadastroResourceClient.buscarEnderecoPorId(pedidoRequestDTO.getEnderecoId()).getBody();
-
+            //Salvando o pedido no banco de dados
             Pedido pedidoResponse = pedidoRepository.save(pedidoRequestDTO.toPedido(pedidoRequestDTO));
 
-            PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
-            pedidoResponseDTO.setId(pedidoResponse.getId());
-            pedidoResponseDTO.setDataPedido(pedidoResponse.getDataPedido());
-            pedidoResponseDTO.setStatus(pedidoResponse.getStatus().toString());
-            pedidoResponseDTO.setRemetente(
-                    new UsuarioResponseDTO(remetente)
-                            .converterUsuarioResponseEnderecoDTOparaUsuarioResponseDTO(remetente));
-            pedidoResponseDTO.setDestinatario(
-                    new UsuarioResponseDTO(destinatario)
-                            .converterUsuarioResponseEnderecoDTOparaUsuarioResponseDTO(destinatario));
-//            assert endereco != null;
-            pedidoResponseDTO.setEndereco(new EnderecoDTO().toEnderecoResponseDTO(endereco));
-
+            PedidoResponseDTO pedidoResponseDTO =
+                    new PedidoResponseDTO(pedidoResponse.getId(),
+                            pedidoResponse.getDataPedido(),
+                            pedidoResponse.getStatus().toString(),
+                            new EnderecoDTO().toEnderecoResponseDTO(endereco),
+                            new UsuarioResponseDTO(remetente)
+                                    .converterUsuarioResponseEnderecoDTOparaUsuarioResponseDTO(remetente),
+                            new UsuarioResponseDTO(destinatario)
+                                    .converterUsuarioResponseEnderecoDTOparaUsuarioResponseDTO(destinatario)
+                    );
             return pedidoResponseDTO;
-
         } catch (FeignException.NotFound exception) {
             throw new UsuarioNaoExistenteException("Remetente, destinatário ou endereço não cadastrado");
         } catch (FeignException e) {
