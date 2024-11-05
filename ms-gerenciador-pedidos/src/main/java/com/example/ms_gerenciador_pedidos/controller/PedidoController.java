@@ -6,10 +6,7 @@ import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
@@ -28,5 +25,11 @@ public class PedidoController {
                                 .buildAndExpand(pedidoResponseDTO.getId())
                                 .toUri())
                 .body(pedidoResponseDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoResponseDTO> buscarPedidoPorId(@PathVariable Long id) {
+        PedidoResponseDTO pedidoResponseDTO = pedidoService.buscarPedidoPorId(id);
+        return ResponseEntity.ok(pedidoResponseDTO);
     }
 }

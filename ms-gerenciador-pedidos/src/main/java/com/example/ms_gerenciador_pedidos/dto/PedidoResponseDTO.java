@@ -1,12 +1,14 @@
 package com.example.ms_gerenciador_pedidos.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PedidoResponseDTO {
     private Long id;
     private LocalDateTime dataPedido;
