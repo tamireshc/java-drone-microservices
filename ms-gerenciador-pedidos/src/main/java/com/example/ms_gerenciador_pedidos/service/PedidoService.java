@@ -11,6 +11,7 @@ import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,10 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
     @Autowired
     MSCadastroResourceClient cadastroResourceClient;
+    @Autowired
+    private EnviarParaFilaService enviarParaFilaService;
+    @Value("${rabbitmq.dronependente.exchange}")
+    private String enchangedDronePendente;
 
     @Transactional
     public PedidoResponseDTO cadastrarPedido(PedidoRequestDTO pedidoRequestDTO) {
@@ -31,6 +36,8 @@ public class PedidoService {
             EnderecoDTO endereco = cadastroResourceClient.buscarEnderecoPorId(pedidoRequestDTO.getEnderecoId()).getBody();
             //Salvando o pedido no banco de dados
             Pedido pedidoResponse = pedidoRepository.save(pedidoRequestDTO.toPedido(pedidoRequestDTO));
+            //Enviado uma solicitação para incluir um drone ao pedido para fila
+            enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(pedidoResponse.getId(), enchangedDronePendente);
 
             PedidoResponseDTO pedidoResponseDTO =
                     new PedidoResponseDTO(pedidoResponse.getId(),
