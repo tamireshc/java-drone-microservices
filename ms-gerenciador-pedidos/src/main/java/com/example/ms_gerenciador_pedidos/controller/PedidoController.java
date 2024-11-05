@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/order")
 public class PedidoController {
@@ -31,5 +33,17 @@ public class PedidoController {
     public ResponseEntity<PedidoResponseDTO> buscarPedidoPorId(@PathVariable Long id) {
         PedidoResponseDTO pedidoResponseDTO = pedidoService.buscarPedidoPorId(id);
         return ResponseEntity.ok(pedidoResponseDTO);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity <List<Pedido>> buscarPedidoPorUsuarioId(@PathVariable Long id) {
+        List<Pedido> pedidos = pedidoService.buscarPedidoPorUsuarioId(id);
+        return ResponseEntity.ok(pedidos);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPedido(@PathVariable Long id) {
+        pedidoService.deletarPedido(id);
+        return ResponseEntity.noContent().build();
     }
 }

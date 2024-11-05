@@ -29,6 +29,11 @@ public class CustomExceptionHandler {
     public ResponseEntity<String> handlePedidoInexistenteException(PedidoInexistenteException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(OperacaoInvalidaException.class)
+    public ResponseEntity<String> handleOperacaoInvalidaException(OperacaoInvalidaException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
 }
 
 
