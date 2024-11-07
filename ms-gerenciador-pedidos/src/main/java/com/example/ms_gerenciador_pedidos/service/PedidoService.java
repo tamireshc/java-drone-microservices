@@ -1,19 +1,20 @@
 
 package com.example.ms_gerenciador_pedidos.service;
 
+import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.*;
-import com.example.ms_gerenciador_pedidos.exceptions.OperacaoInvalidaException;
-import com.example.ms_gerenciador_pedidos.exceptions.PedidoInexistenteException;
-import com.example.ms_gerenciador_pedidos.exceptions.StatusInvalidoException;
+import com.example.ms_gerenciador_pedidos.exceptions.*;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.model.enuns.StatusPedido;
 import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PedidoService {
@@ -21,6 +22,8 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
     @Autowired
     BuscarRemetenteDestinatarioEnderecoService buscarRemetenteDestinatarioEnderecoService;
+    @Autowired
+    private MSCadastroResourceClient cadastroResourceClient;
     @Autowired
     private EnviarParaFilaService enviarParaFilaService;
     @Value("${rabbitmq.dronependente.exchange}")
@@ -66,12 +69,12 @@ public class PedidoService {
         pedidoResponseDTO.setRemetente(remetenteDestinatarioEnderecoDTO.getRemetente());
         pedidoResponseDTO.setDestinatario(remetenteDestinatarioEnderecoDTO.getDestinatario());
         pedidoResponseDTO.setDroneId(pedido.getDroneId());
-
         return pedidoResponseDTO;
     }
-    public List<Pedido>buscarPedidoPorUsuarioId(Long id) {
-        List<Pedido> pedido = pedidoRepository.findByUsuarioId(id);
-        return pedido;
+
+    public List<Pedido> buscarPedidosPorUsuarioId(Long id) {
+        List<Pedido> pedidos = pedidoRepository.findByUsuarioId(id);
+        return pedidos;
     }
 
     public void deletarPedido(Long id) {
@@ -79,9 +82,64 @@ public class PedidoService {
         if (pedido == null) {
             throw new PedidoInexistenteException("Pedido não encontrado");
         }
-        if(pedido.getStatus() != StatusPedido.CRIADO) {
+        if (pedido.getStatus() != StatusPedido.CRIADO) {
             throw new OperacaoInvalidaException("Pedido não pode ser deletado");
         }
         pedidoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public PedidoResponseDTO editarPedido(Long id, PedidoRequestDTO pedido) {
+        Pedido pedidoExistente = pedidoRepository.findById(id).orElse(null);
+        if (pedidoExistente == null) {
+            throw new PedidoInexistenteException("Pedido não encontrado");
+        }
+        if (!StatusPedido.equals(pedido.getStatus())) {
+            throw new StatusInvalidoException("Status inexistente");
+        }
+        //Verificando a existencia do remetente, destinatário e endereço
+        RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
+                .busca(pedido.getUsuarioId(),
+                        pedido.getDestinatarioId(),
+                        pedido.getEnderecoId());
+        //Verificando a existência do drone
+        try {
+            DroneDTO drone = cadastroResourceClient.buscarDronePorId(pedido.getDroneId()).getBody();
+            if (drone == null) {
+                throw new PedidoInexistenteException("Drone não encontrado");
+            }
+            if (pedidoExistente.getStatus().equals("CRIADO") && !Objects.equals(pedido.getDroneId(), pedidoExistente.getDroneId())
+                    && !drone.getStatus().toUpperCase().equals("DISPONIVEL")) {
+                throw new OperacaoInvalidaException("Não é possível alocar este drone para este pedido");
+            }
+        } catch (FeignException e) {
+            System.out.println(e.getMessage());
+            throw new ServicoIndisponivelException("Serviço ms-gerenciador-cadastros indisponível");
+        }
+
+        if ((pedido.getStatus().equalsIgnoreCase("EM_ROTA") || pedido.getStatus().equalsIgnoreCase("ENTREGUE")
+                || pedido.getStatus().equalsIgnoreCase("CANCELADO"))
+                && pedido.getDroneId() != pedidoExistente.getDroneId()) {
+            throw new OperacaoInvalidaException("Não é possível alterar o drone deste pedido");
+        }
+        //Salvando o pedido editado no banco de dados
+        pedidoExistente.setUsuarioId(pedido.getUsuarioId());
+        pedidoExistente.setDestinatarioId(pedido.getDestinatarioId());
+        pedidoExistente.setEnderecoId(pedido.getEnderecoId());
+        pedidoExistente.setStatus(StatusPedido.valueOf(pedido.getStatus().toUpperCase()));
+        pedidoExistente.setDroneId(pedido.getDroneId());
+        Pedido pedidoEditado = pedidoRepository.save(pedidoExistente);
+        //Convertendo a resposta para o DTO
+        PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
+        pedidoResponseDTO.setId(id);
+        pedidoResponseDTO.setDataPedido(pedidoEditado.getDataPedido());
+        pedidoResponseDTO.setDataEntrega(pedidoEditado.getDataEntrega());
+        pedidoResponseDTO.setStatus(pedidoEditado.getStatus().toString());
+        pedidoResponseDTO.setRemetente(remetenteDestinatarioEnderecoDTO.getRemetente());
+        pedidoResponseDTO.setDestinatario(remetenteDestinatarioEnderecoDTO.getDestinatario());
+        pedidoResponseDTO.setEndereco(remetenteDestinatarioEnderecoDTO.getEndereco());
+        pedidoResponseDTO.setDroneId(pedidoEditado.getDroneId());
+
+        return pedidoResponseDTO;
     }
 }

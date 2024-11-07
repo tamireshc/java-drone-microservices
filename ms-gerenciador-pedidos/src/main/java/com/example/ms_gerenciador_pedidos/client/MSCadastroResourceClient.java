@@ -1,5 +1,6 @@
 package com.example.ms_gerenciador_pedidos.client;
 
+import com.example.ms_gerenciador_pedidos.dto.DroneDTO;
 import com.example.ms_gerenciador_pedidos.dto.EnderecoDTO;
 import com.example.ms_gerenciador_pedidos.dto.UsuarioResponseEnderecoDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,4 +19,8 @@ public interface MSCadastroResourceClient {
 
     @GetMapping("/address/{id}")
     ResponseEntity<EnderecoDTO> buscarEnderecoPorId(@PathVariable Long id);
+
+    @GetMapping("/drone/{id}")
+    ResponseEntity<DroneDTO> buscarDronePorId(@PathVariable Long id);
+
 }

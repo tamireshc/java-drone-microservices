@@ -13,6 +13,7 @@ public class PedidoRequestDTO {
     private Long enderecoId;
     private Long usuarioId;
     private Long destinatarioId;
+    private Long droneId;
 
     public Pedido toPedido(PedidoRequestDTO pedidoRequestDTO) {
         Pedido pedido = new Pedido();

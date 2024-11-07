@@ -37,7 +37,7 @@ public class PedidoController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity <List<Pedido>> buscarPedidoPorUsuarioId(@PathVariable Long id) {
-        List<Pedido> pedidos = pedidoService.buscarPedidoPorUsuarioId(id);
+        List<Pedido> pedidos = pedidoService.buscarPedidosPorUsuarioId(id);
         return ResponseEntity.ok(pedidos);
     }
 
@@ -45,5 +45,11 @@ public class PedidoController {
     public ResponseEntity<Void> deletarPedido(@PathVariable Long id) {
         pedidoService.deletarPedido(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoResponseDTO> alterarStatusPedido(@PathVariable Long id, @RequestBody PedidoRequestDTO pedido) {
+        PedidoResponseDTO pedidoResponseDTO = pedidoService.editarPedido(id, pedido);
+        return ResponseEntity.ok(pedidoResponseDTO);
     }
 }
