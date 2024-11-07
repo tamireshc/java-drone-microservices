@@ -2,15 +2,12 @@ package com.example.ms_gerenciador_pedidos.listener;
 
 import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.DroneDTO;
-import com.example.ms_gerenciador_pedidos.exceptions.PedidoInexistenteException;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
-import com.example.ms_gerenciador_pedidos.service.PedidoService;
 import com.netflix.discovery.converters.Auto;
 import jakarta.transaction.Transactional;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
