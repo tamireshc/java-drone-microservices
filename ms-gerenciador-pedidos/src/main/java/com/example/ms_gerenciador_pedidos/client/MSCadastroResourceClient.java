@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 
 @FeignClient(
         name = "ms-gerenciador-cadastros",
@@ -23,4 +25,6 @@ public interface MSCadastroResourceClient {
     @GetMapping("/drone/{id}")
     ResponseEntity<DroneDTO> buscarDronePorId(@PathVariable Long id);
 
+    @GetMapping("/drone/status/{status}")
+    ResponseEntity<List<DroneDTO>> listarDronesPorStatus(@PathVariable String status);
 }
