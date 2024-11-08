@@ -20,10 +20,14 @@ public class RabbitMQConfiguration {
     private String queueDronePendente;
     @Value("${rabbitmq.dronependente.queueDLQ}")
     private String queueDronePendenteDLQ;
+    @Value("${rabbitmq.dronependente.queueSinal}")
+    private String queueDronePendenteSinal;
     @Value("${rabbitmq.dronependente.exchange}")
     private String enchangedDronePendente;
     @Value("${rabbitmq.dronependente.exchangeDLQ}")
     private String enchangedDronePendenteDLQ;
+    @Value("${rabbitmq.dronependente.exchangeSinal}")
+    private String enchangedDronePendenteSinal;
 
 
     //o próprio spring cria um @bean do connectionfactory e injeta
@@ -70,6 +74,11 @@ public class RabbitMQConfiguration {
         return QueueBuilder.durable(queueDronePendenteDLQ).build();
     }
 
+    @Bean
+    public Queue criarFilaDronePendenteSinal() {
+        return QueueBuilder.durable(queueDronePendenteSinal).build();
+    }
+
     //exchanges
     @Bean
     public FanoutExchange criarFanoutExchangeDronePendente() {
@@ -79,6 +88,11 @@ public class RabbitMQConfiguration {
     @Bean
     public FanoutExchange criarFanoutExchangeDronePendenteDLQ() {
         return ExchangeBuilder.fanoutExchange(enchangedDronePendenteDLQ).build();
+    }
+
+    @Bean
+    public FanoutExchange criarFanoutExchangeDronePendenteSinal() {
+        return ExchangeBuilder.fanoutExchange(enchangedDronePendenteSinal).build();
     }
 
     //binding do exchanged Pendente para as filas de endereco pendente
@@ -92,5 +106,11 @@ public class RabbitMQConfiguration {
     public Binding criarBindingDronePendeteMsGerenciadorPedidosDLQ() {
         return BindingBuilder.bind(criarFilaDronePendenteDLQ())
                 .to(criarFanoutExchangeDronePendenteDLQ());
+    }
+
+    @Bean
+    public Binding criarBindingDronePendeteMsGerenciadorPedidosSinal() {
+        return BindingBuilder.bind(criarFilaDronePendenteSinal())
+                .to(criarFanoutExchangeDronePendenteSinal());
     }
 }
