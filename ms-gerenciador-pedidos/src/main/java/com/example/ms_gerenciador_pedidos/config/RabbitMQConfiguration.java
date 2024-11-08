@@ -1,6 +1,8 @@
 package com.example.ms_gerenciador_pedidos.config;
 
+import com.example.ms_gerenciador_pedidos.listener.NovoDroneDisponivelListener;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -10,6 +12,9 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+
 
 @Configuration
 public class RabbitMQConfiguration {
@@ -31,8 +36,9 @@ public class RabbitMQConfiguration {
 
 
     //o próprio spring cria um @bean do connectionfactory e injeta
-    public RabbitMQConfiguration(ConnectionFactory connectionFactory) {
+    public RabbitMQConfiguration(ConnectionFactory connectionFactoryr) {
         this.connectionFactory = connectionFactory;
+
     }
 
     // inicializa as filas descritas no @bean no rabbitMQ
@@ -62,6 +68,29 @@ public class RabbitMQConfiguration {
         rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
         return rabbitTemplate;
     }
+
+
+//    @Bean
+//    public SimpleMessageListenerContainer primaryListenerContainer(ConnectionFactory connectionFactory) {
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+//        container.setQueueNames(queueDronePendenteDLQ);
+//        container.setAutoStartup(false); // Listener não inicia automaticamente
+//        // Configuração do MessageListener deve ser definida posteriormente, conforme necessário
+//        return container;
+//    }
+
+    @Bean
+    public SimpleMessageListenerContainer primaryListenerContainer(ConnectionFactory connectionFactory, NovoDroneDisponivelListener novoDroneDisponivelListener) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        container.setQueueNames(queueDronePendenteDLQ);
+        container.setAutoStartup(false);
+
+        // Set the message listener here:
+        container.setMessageListener(novoDroneDisponivelListener::listenDLQDronePendente);
+
+        return container;
+    }
+
 
     //filas
     @Bean

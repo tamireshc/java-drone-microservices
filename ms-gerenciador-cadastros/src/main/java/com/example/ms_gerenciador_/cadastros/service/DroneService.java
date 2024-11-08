@@ -24,7 +24,9 @@ public class DroneService {
     @Transactional
     public Drone cadastrarDrone(Drone drone) {
         Drone droneCriado = droneRepository.save(drone);
-        enviarParaFilaService.enviarDroneDisponivelParaFila(droneCriado.getId(), enchangedDronePendenteSinal);
+        if (droneCriado.getStatus().equals(StatusDrone.DISPONIVEL)) {
+            enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDronePendenteSinal);
+        }
         return droneCriado;
     }
 
@@ -47,8 +49,8 @@ public class DroneService {
     public Drone alterarStatusDrone(String id, String status) {
         Drone drone = buscarDronePorId(id);
         drone.setStatus(StatusDrone.valueOf(status.toUpperCase()));
-        if(status.equalsIgnoreCase("DISPONIVEL")){
-            enviarParaFilaService.enviarDroneDisponivelParaFila(drone.getId(), enchangedDronePendenteSinal);
+        if (status.equalsIgnoreCase("DISPONIVEL")) {
+            enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDronePendenteSinal);
         }
         return droneRepository.save(drone);
     }

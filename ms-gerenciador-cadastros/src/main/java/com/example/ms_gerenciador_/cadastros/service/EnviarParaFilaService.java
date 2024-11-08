@@ -15,7 +15,7 @@ public class EnviarParaFilaService {
         rabbitTemplate.convertAndSend(exchange, "", endereco);
     }
 
-    public void enviarDroneDisponivelParaFila(Long idDrone, String exchange) {
-        rabbitTemplate.convertAndSend(exchange, "", idDrone);
+    public void enviarDroneDisponivelParaFila(String message, String exchange) {
+        rabbitTemplate.convertAndSend(exchange, "", message);
     }
 }
