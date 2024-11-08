@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -27,4 +28,7 @@ public interface MSCadastroResourceClient {
 
     @GetMapping("/drone/status/{status}")
     ResponseEntity<List<DroneDTO>> listarDronesPorStatus(@PathVariable String status);
+
+    @PutMapping("/drone/{id}/status/{status}")
+    ResponseEntity<DroneDTO> alterarStatusDrone(@PathVariable String id, @PathVariable String status);
 }

@@ -58,8 +58,12 @@ public class PedidoService {
         if (pedido == null) {
             throw new PedidoInexistenteException("Pedido não encontrado");
         }
+        System.out.println(pedido.getUsuarioId());
+        System.out.println(pedido.getDestinatarioId());
+        System.out.println(id);
+
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
-                .busca(pedido.getUsuarioId(), pedido.getDestinatarioId(), id);
+                .busca(pedido.getUsuarioId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
 
         PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
         pedidoResponseDTO.setId(pedido.getId());
