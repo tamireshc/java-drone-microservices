@@ -2,9 +2,11 @@ package com.example.ms_gerenciador_pedidos.listener;
 
 import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.DroneDTO;
+import com.example.ms_gerenciador_pedidos.exceptions.ServicoIndisponivelException;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
 import com.example.ms_gerenciador_pedidos.service.EnviarParaFilaService;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +35,25 @@ public class DronePendentePedidoListener {
     @RabbitListener(queues = queueDronePendente)
     @Transactional
     public void completarPedidoComDroneDisponivel(String idPedido) throws InterruptedException {
-        List<DroneDTO> dronesDisponiveis = msCadastroResourceClient.listarDronesPorStatus("DISPONIVEL").getBody();
-        Pedido pedido = pedidoRepository.findById(Long.valueOf(idPedido)).orElse(null);
+        try {
+            List<DroneDTO> dronesDisponiveis = msCadastroResourceClient.listarDronesPorStatus("DISPONIVEL").getBody();
+            Pedido pedido = pedidoRepository.findById(Long.valueOf(idPedido)).orElse(null);
 
-        if (dronesDisponiveis != null && dronesDisponiveis.size() > 0 && pedido != null) {
-            DroneDTO drone = dronesDisponiveis.get(0);
-            pedido.setDroneId(drone.getId());
-            msCadastroResourceClient.alterarStatusDrone(String.valueOf(drone.getId()), "EM_ROTA");
-            pedidoRepository.save(pedido);
-            listenerController.stopListener();
+            if (dronesDisponiveis != null && dronesDisponiveis.size() > 0 && pedido != null) {
+                DroneDTO drone = dronesDisponiveis.get(0);
+                pedido.setDroneId(drone.getId());
+                msCadastroResourceClient.alterarStatusDrone(String.valueOf(drone.getId()), "EM_ROTA");
+                pedidoRepository.save(pedido);
+                listenerController.stopListener();
+            }
+            //Se não hover drone disponível enviar para DLQ de drone pendente
+            else {
+                enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(Long.valueOf(idPedido), exchangeDronePendenteDLQ);
+            }
+            // se a ms-cadastro estiver indiponivel
+        } catch (FeignException e) {
+            System.out.println(e.getMessage());
+            throw new ServicoIndisponivelException("Serviço ms-gerenciador-cadastros indisponível");
         }
-        //Se não hover drone disponível enviar para DLQ de drone pendente
-        else {
-            enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(Long.valueOf(idPedido), exchangeDronePendenteDLQ);
-        }
-        // se a ms-cadastro estiver indiponivel
     }
 }

@@ -4,7 +4,6 @@ package com.example.ms_gerenciador_pedidos.service;
 import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.*;
 import com.example.ms_gerenciador_pedidos.exceptions.*;
-import com.example.ms_gerenciador_pedidos.listener.ListenerController;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.model.enuns.StatusPedido;
 import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;

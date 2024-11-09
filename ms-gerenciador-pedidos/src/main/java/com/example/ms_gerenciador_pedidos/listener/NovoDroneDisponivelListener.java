@@ -2,8 +2,10 @@ package com.example.ms_gerenciador_pedidos.listener;
 
 import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.DroneDTO;
+import com.example.ms_gerenciador_pedidos.exceptions.ServicoIndisponivelException;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
+
 import static java.lang.Thread.sleep;
 
 @Component
@@ -41,6 +45,7 @@ public class NovoDroneDisponivelListener {
 
     @Transactional
     public void listenDLQDronePendente(Message message) {
+        try {
             List<DroneDTO> dronesDisponiveis = msCadastroResourceClient.listarDronesPorStatus("DISPONIVEL").getBody();
             String idPedido = new String(message.getBody());
             Pedido pedido = pedidoRepository.findById(Long.valueOf(idPedido)).orElse(null);
@@ -48,5 +53,10 @@ public class NovoDroneDisponivelListener {
             pedido.setDroneId(drone.getId());
             msCadastroResourceClient.alterarStatusDrone(String.valueOf(drone.getId()), "EM_ROTA");
             pedidoRepository.save(pedido);
+            // se a ms-cadastro estiver indiponivel
+        } catch (FeignException e) {
+            System.out.println(e.getMessage());
+            throw new ServicoIndisponivelException("Serviço ms-gerenciador-cadastros indisponível");
         }
     }
+}

@@ -14,8 +14,8 @@ import java.util.List;
 
 @FeignClient(
         name = "ms-gerenciador-cadastros",
-        path = "/register"
-)
+        path = "/register")
+
 public interface MSCadastroResourceClient {
     @GetMapping("/user/id/{id}")
     ResponseEntity<UsuarioResponseEnderecoDTO> buscarUsuarioPorId(@PathVariable Long id);
