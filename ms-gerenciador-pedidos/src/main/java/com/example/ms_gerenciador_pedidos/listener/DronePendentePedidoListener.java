@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,28 +26,27 @@ public class DronePendentePedidoListener {
     private static final String queueDronePendente = "${rabbitmq.dronependente.queue}";
     @Value("${rabbitmq.dronependente.exchangeDLQ}")
     private String exchangeDronePendenteDLQ;
-
+    @Autowired
+    @Lazy
+    private ListenerController listenerController;
 
     @RabbitListener(queues = queueDronePendente)
     @Transactional
-    public void completarPedidoComDroneDisponivel(String idPedido) {
+    public void completarPedidoComDroneDisponivel(String idPedido) throws InterruptedException {
         List<DroneDTO> dronesDisponiveis = msCadastroResourceClient.listarDronesPorStatus("DISPONIVEL").getBody();
         Pedido pedido = pedidoRepository.findById(Long.valueOf(idPedido)).orElse(null);
-        System.out.println(dronesDisponiveis);
-        System.out.println(dronesDisponiveis.size());
-        System.out.println(pedido);
 
         if (dronesDisponiveis != null && dronesDisponiveis.size() > 0 && pedido != null) {
             DroneDTO drone = dronesDisponiveis.get(0);
             pedido.setDroneId(drone.getId());
             msCadastroResourceClient.alterarStatusDrone(String.valueOf(drone.getId()), "EM_ROTA");
             pedidoRepository.save(pedido);
+            listenerController.stopListener();
         }
-        else{
+        //Se não hover drone disponível enviar para DLQ de drone pendente
+        else {
             enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(Long.valueOf(idPedido), exchangeDronePendenteDLQ);
         }
-
-        //se nao tiver drone disponivel
         // se a ms-cadastro estiver indiponivel
     }
 }

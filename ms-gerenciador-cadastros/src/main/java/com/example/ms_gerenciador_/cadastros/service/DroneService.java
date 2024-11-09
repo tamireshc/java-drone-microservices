@@ -18,14 +18,14 @@ public class DroneService {
     private DroneRepository droneRepository;
     @Autowired
     EnviarParaFilaService enviarParaFilaService;
-    @Value("${rabbitmq.dronependente.exchangeSinal}")
-    private String enchangedDronePendenteSinal;
+    @Value("${rabbitmq.dronedisponivel.exchangeSinal}")
+    private String enchangedDroneDisponivelSinal;
 
     @Transactional
     public Drone cadastrarDrone(Drone drone) {
         Drone droneCriado = droneRepository.save(drone);
         if (droneCriado.getStatus().equals(StatusDrone.DISPONIVEL)) {
-            enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDronePendenteSinal);
+            enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDroneDisponivelSinal);
         }
         return droneCriado;
     }
@@ -50,7 +50,7 @@ public class DroneService {
         Drone drone = buscarDronePorId(id);
         drone.setStatus(StatusDrone.valueOf(status.toUpperCase()));
         if (status.equalsIgnoreCase("DISPONIVEL")) {
-            enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDronePendenteSinal);
+            enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDroneDisponivelSinal);
         }
         return droneRepository.save(drone);
     }

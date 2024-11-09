@@ -15,7 +15,7 @@ public class ListenerController {
         System.out.println("Listener iniciado com sucesso.");
     }
 
-    public void stopListener() {
+    public void stopListener() throws InterruptedException {
         primaryListenerContainer.stop();
         System.out.println("Listener parado com sucesso.");
     }

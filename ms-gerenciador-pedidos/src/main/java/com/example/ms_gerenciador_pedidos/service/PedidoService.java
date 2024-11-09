@@ -4,6 +4,7 @@ package com.example.ms_gerenciador_pedidos.service;
 import com.example.ms_gerenciador_pedidos.client.MSCadastroResourceClient;
 import com.example.ms_gerenciador_pedidos.dto.*;
 import com.example.ms_gerenciador_pedidos.exceptions.*;
+import com.example.ms_gerenciador_pedidos.listener.ListenerController;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
 import com.example.ms_gerenciador_pedidos.model.enuns.StatusPedido;
 import com.example.ms_gerenciador_pedidos.repository.PedidoRepository;
@@ -50,6 +51,7 @@ public class PedidoService {
                         remetenteDestinatarioEnderecoDTO.getEndereco(),
                         remetenteDestinatarioEnderecoDTO.getRemetente(),
                         remetenteDestinatarioEnderecoDTO.getDestinatario());
+
         return pedidoResponseDTO;
     }
 
@@ -58,10 +60,6 @@ public class PedidoService {
         if (pedido == null) {
             throw new PedidoInexistenteException("Pedido não encontrado");
         }
-        System.out.println(pedido.getUsuarioId());
-        System.out.println(pedido.getDestinatarioId());
-        System.out.println(id);
-
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
                 .busca(pedido.getUsuarioId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
 

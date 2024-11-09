@@ -1,20 +1,20 @@
 package com.example.ms_gerenciador_pedidos.config;
 
+import com.example.ms_gerenciador_pedidos.listener.ListenerController;
 import com.example.ms_gerenciador_pedidos.listener.NovoDroneDisponivelListener;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
 public class RabbitMQConfiguration {
@@ -25,20 +25,21 @@ public class RabbitMQConfiguration {
     private String queueDronePendente;
     @Value("${rabbitmq.dronependente.queueDLQ}")
     private String queueDronePendenteDLQ;
-    @Value("${rabbitmq.dronependente.queueSinal}")
-    private String queueDronePendenteSinal;
+    @Value("${rabbitmq.dronedisponivel.queueSinal}")
+    private String queueDroneDisponivelSinal;
     @Value("${rabbitmq.dronependente.exchange}")
     private String enchangedDronePendente;
     @Value("${rabbitmq.dronependente.exchangeDLQ}")
     private String enchangedDronePendenteDLQ;
-    @Value("${rabbitmq.dronependente.exchangeSinal}")
-    private String enchangedDronePendenteSinal;
-
+    @Value("${rabbitmq.dronedisponivel.exchangeSinal}")
+    private String enchangedDronedisponivelSinal;
+    @Autowired
+    @Lazy
+    private ListenerController listenerController;
 
     //o próprio spring cria um @bean do connectionfactory e injeta
     public RabbitMQConfiguration(ConnectionFactory connectionFactoryr) {
         this.connectionFactory = connectionFactory;
-
     }
 
     // inicializa as filas descritas no @bean no rabbitMQ
@@ -69,28 +70,14 @@ public class RabbitMQConfiguration {
         return rabbitTemplate;
     }
 
-
-//    @Bean
-//    public SimpleMessageListenerContainer primaryListenerContainer(ConnectionFactory connectionFactory) {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
-//        container.setQueueNames(queueDronePendenteDLQ);
-//        container.setAutoStartup(false); // Listener não inicia automaticamente
-//        // Configuração do MessageListener deve ser definida posteriormente, conforme necessário
-//        return container;
-//    }
-
     @Bean
     public SimpleMessageListenerContainer primaryListenerContainer(ConnectionFactory connectionFactory, NovoDroneDisponivelListener novoDroneDisponivelListener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
         container.setQueueNames(queueDronePendenteDLQ);
         container.setAutoStartup(false);
-
-        // Set the message listener here:
         container.setMessageListener(novoDroneDisponivelListener::listenDLQDronePendente);
-
         return container;
     }
-
 
     //filas
     @Bean
@@ -104,8 +91,8 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public Queue criarFilaDronePendenteSinal() {
-        return QueueBuilder.durable(queueDronePendenteSinal).build();
+    public Queue criarFilaDroneDisponivelSinal() {
+        return QueueBuilder.durable(queueDroneDisponivelSinal).build();
     }
 
     //exchanges
@@ -120,26 +107,26 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public FanoutExchange criarFanoutExchangeDronePendenteSinal() {
-        return ExchangeBuilder.fanoutExchange(enchangedDronePendenteSinal).build();
+    public FanoutExchange criarFanoutExchangeDroneDisponivelSinal() {
+        return ExchangeBuilder.fanoutExchange(enchangedDronedisponivelSinal).build();
     }
 
-    //binding do exchanged Pendente para as filas de endereco pendente
+    //binding do exchanged as filas
     @Bean
-    public Binding criarBindingDronePendeteMsGerenciadorPedidos() {
+    public Binding criarBindingDronePendenteMsGerenciadorPedidos() {
         return BindingBuilder.bind(criarFilaDronePendente())
                 .to(criarFanoutExchangeDronePendente());
     }
 
     @Bean
-    public Binding criarBindingDronePendeteMsGerenciadorPedidosDLQ() {
+    public Binding criarBindingDronePendenteMsGerenciadorPedidosDLQ() {
         return BindingBuilder.bind(criarFilaDronePendenteDLQ())
                 .to(criarFanoutExchangeDronePendenteDLQ());
     }
 
     @Bean
-    public Binding criarBindingDronePendeteMsGerenciadorPedidosSinal() {
-        return BindingBuilder.bind(criarFilaDronePendenteSinal())
-                .to(criarFanoutExchangeDronePendenteSinal());
+    public Binding criarBindingDronePendenteMsGerenciadorPedidosSinal() {
+        return BindingBuilder.bind(criarFilaDroneDisponivelSinal())
+                .to(criarFanoutExchangeDroneDisponivelSinal());
     }
 }
