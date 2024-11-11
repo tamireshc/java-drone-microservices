@@ -26,7 +26,7 @@ public class Pedido {
     @Column(nullable = false)
     private Long enderecoId;
     @Column(nullable = false)
-    private Long usuarioId;
+    private Long remetenteId;
     @Column(nullable = false)
     private Long destinatarioId;
     private Long droneId;

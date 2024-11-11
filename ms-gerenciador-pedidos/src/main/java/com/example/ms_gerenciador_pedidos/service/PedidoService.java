@@ -35,7 +35,7 @@ public class PedidoService {
             throw new StatusInvalidoException("Status inexistente");
         }
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
-                .busca(pedidoRequestDTO.getUsuarioId(),
+                .busca(pedidoRequestDTO.getRemetenteId(),
                         pedidoRequestDTO.getDestinatarioId(),
                         pedidoRequestDTO.getEnderecoId());
         //Salvando o pedido no banco de dados
@@ -60,7 +60,7 @@ public class PedidoService {
             throw new PedidoInexistenteException("Pedido não encontrado");
         }
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
-                .busca(pedido.getUsuarioId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
+                .busca(pedido.getRemetenteId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
 
         PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
         pedidoResponseDTO.setId(pedido.getId());
@@ -100,7 +100,7 @@ public class PedidoService {
         }
         //Verificando a existencia do remetente, destinatário e endereço
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
-                .busca(pedido.getUsuarioId(),
+                .busca(pedido.getRemetenteId(),
                         pedido.getDestinatarioId(),
                         pedido.getEnderecoId());
         //Verificando a existência do drone
@@ -124,7 +124,7 @@ public class PedidoService {
             throw new OperacaoInvalidaException("Não é possível alterar o drone deste pedido");
         }
         //Salvando o pedido editado no banco de dados
-        pedidoExistente.setUsuarioId(pedido.getUsuarioId());
+        pedidoExistente.setRemetenteId(pedido.getRemetenteId());
         pedidoExistente.setDestinatarioId(pedido.getDestinatarioId());
         pedidoExistente.setEnderecoId(pedido.getEnderecoId());
         pedidoExistente.setStatus(StatusPedido.valueOf(pedido.getStatus().toUpperCase()));

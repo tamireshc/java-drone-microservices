@@ -11,7 +11,7 @@ public class PedidoRequestDTO {
     private LocalDateTime dataPedido;
     private String status;
     private Long enderecoId;
-    private Long usuarioId;
+    private Long remetenteId;
     private Long destinatarioId;
     private Long droneId;
 
@@ -20,7 +20,7 @@ public class PedidoRequestDTO {
         pedido.setDataPedido(pedidoRequestDTO.getDataPedido());
         pedido.setStatus(StatusPedido.valueOf(pedidoRequestDTO.getStatus().toUpperCase()));
         pedido.setEnderecoId(pedidoRequestDTO.getEnderecoId());
-        pedido.setUsuarioId(pedidoRequestDTO.getUsuarioId());
+        pedido.setRemetenteId(pedidoRequestDTO.getRemetenteId());
         pedido.setDestinatarioId(pedidoRequestDTO.getDestinatarioId());
         return pedido;
     }
