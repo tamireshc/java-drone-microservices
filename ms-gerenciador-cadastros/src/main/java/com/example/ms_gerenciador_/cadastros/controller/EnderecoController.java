@@ -45,6 +45,12 @@ public class EnderecoController {
         return ResponseEntity.ok(enderecoService.listarEnderecos());
     }
 
+    @PutMapping("/address/{id}")
+    public ResponseEntity<Endereco> editarEndereco(@PathVariable Long id, @RequestBody EnderecoRequestDTO endereco) {
+        Endereco enderecoResponse = enderecoService.editarEnderecoFETCHAPI(id, endereco);
+        return ResponseEntity.ok(enderecoResponse);
+    }
+
     @DeleteMapping("/address/{id}")
     public ResponseEntity<String> deletarEndereco(@PathVariable Long id) {
         enderecoService.deletarEndereco(id);

@@ -101,4 +101,24 @@ public class EnderecoService {
 
         return enderecoRepository.save(enderecoExistente);
     }
+
+    @Transactional
+    public Endereco editarEnderecoFETCHAPI(Long id, EnderecoRequestDTO endereco) {
+        Endereco enderecoExistente = buscarEnderecoPorId(id);
+
+        if (endereco.getLogradouro() != null) enderecoExistente.setLogradouro(endereco.getLogradouro());
+        if (endereco.getNumero() > 0) enderecoExistente.setNumero(endereco.getNumero());
+        if (endereco.getComplemento() != null) enderecoExistente.setComplemento(endereco.getComplemento());
+        if (endereco.getBairro() != null) enderecoExistente.setBairro(endereco.getBairro());
+        if (endereco.getCidade() != null) enderecoExistente.setCidade(endereco.getCidade());
+        if (endereco.getEstado() != null) enderecoExistente.setEstado(endereco.getEstado());
+        if (endereco.getCep() != null) enderecoExistente.setCep(endereco.getCep());
+
+        try {
+            latitudeLongitudeService.enviarEnderecoParaFila(enderecoExistente, enchangedEnderecoPendente);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return buscarEnderecoPorId(id);
+    }
 }
