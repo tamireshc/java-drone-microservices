@@ -50,4 +50,11 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(exception.getMessage());
     }
+
+    @ExceptionHandler(DroneNaoExistenteException.class)
+    public ResponseEntity<String> handleDroneNaoExistenteException(DroneNaoExistenteException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
 }

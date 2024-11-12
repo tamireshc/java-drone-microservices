@@ -1,5 +1,6 @@
 package com.example.ms_gerenciador_.cadastros.controller;
 
+import com.example.ms_gerenciador_.cadastros.dto.DroneRequestDTO;
 import com.example.ms_gerenciador_.cadastros.model.Drone;
 import com.example.ms_gerenciador_.cadastros.service.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class DroneController {
     DroneService droneService;
 
     @PostMapping("/drone")
-    public ResponseEntity<Drone> cadastrarDrone(@RequestBody Drone drone) {
+    public ResponseEntity<Drone> cadastrarDrone(@RequestBody DroneRequestDTO drone) {
         Drone droneResponse = droneService.cadastrarDrone(drone);
         return ResponseEntity.created(
                         ServletUriComponentsBuilder

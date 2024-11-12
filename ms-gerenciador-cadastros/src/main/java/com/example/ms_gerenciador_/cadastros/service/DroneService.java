@@ -1,5 +1,7 @@
 package com.example.ms_gerenciador_.cadastros.service;
 
+import com.example.ms_gerenciador_.cadastros.dto.DroneRequestDTO;
+import com.example.ms_gerenciador_.cadastros.exception.DroneNaoExistenteException;
 import com.example.ms_gerenciador_.cadastros.exception.StatusInvalidoException;
 import com.example.ms_gerenciador_.cadastros.model.Drone;
 import com.example.ms_gerenciador_.cadastros.model.enums.StatusDrone;
@@ -22,8 +24,17 @@ public class DroneService {
     private String enchangedDroneDisponivelSinal;
 
     @Transactional
-    public Drone cadastrarDrone(Drone drone) {
-        Drone droneCriado = droneRepository.save(drone);
+    public Drone cadastrarDrone(DroneRequestDTO drone) {
+        if (!StatusDrone.equals(drone.getStatus())) {
+            throw new StatusInvalidoException("Status inexistente");
+        }
+        Drone novoDrone = new Drone();
+        novoDrone.setModelo(drone.getModelo());
+        novoDrone.setMarca(drone.getMarca());
+        novoDrone.setAno(drone.getAno());
+        novoDrone.setStatus(StatusDrone.valueOf(drone.getStatus().toUpperCase()));
+        Drone droneCriado = droneRepository.save(novoDrone);
+
         if (droneCriado.getStatus().equals(StatusDrone.DISPONIVEL)) {
             enviarParaFilaService.enviarDroneDisponivelParaFila("START", enchangedDroneDisponivelSinal);
         }
@@ -31,6 +42,10 @@ public class DroneService {
     }
 
     public Drone buscarDronePorId(String id) {
+        Drone drone = droneRepository.findById(Long.parseLong(id)).orElse(null);
+        if (drone == null) {
+            throw new DroneNaoExistenteException("Drone não encontrado");
+        }
         return droneRepository.findById(Long.parseLong(id)).orElse(null);
     }
 
