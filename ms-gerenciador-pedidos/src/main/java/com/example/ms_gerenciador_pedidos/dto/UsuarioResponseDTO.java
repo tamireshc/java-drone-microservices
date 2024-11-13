@@ -22,7 +22,8 @@ public class UsuarioResponseDTO {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getSobrenome(),
-                usuario.getTelefone(),
-                usuario.getEmail());
+                usuario.getEmail(),
+                usuario.getTelefone()
+                );
     }
 }

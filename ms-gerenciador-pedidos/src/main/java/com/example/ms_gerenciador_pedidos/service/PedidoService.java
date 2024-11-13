@@ -74,7 +74,14 @@ public class PedidoService {
     }
 
     public List<Pedido> buscarPedidosPorUsuarioId(Long id) {
-        List<Pedido> pedidos = pedidoRepository.findByUsuarioId(id);
+        try {
+            UsuarioResponseEnderecoDTO usuario = cadastroResourceClient.buscarUsuarioPorId(id).getBody();
+        } catch (FeignException.NotFound e) {
+            throw new UsuarioNaoExistenteException("Usuário não encontrado");
+        } catch (FeignException e) {
+            throw new ServicoIndisponivelException("Serviço ms-gerenciador-cadastros indisponível");
+        }
+        List<Pedido> pedidos = pedidoRepository.findByRemetenteId(id);
         return pedidos;
     }
 
@@ -106,13 +113,12 @@ public class PedidoService {
         //Verificando a existência do drone
         try {
             DroneDTO drone = cadastroResourceClient.buscarDronePorId(pedido.getDroneId()).getBody();
-            if (drone == null) {
-                throw new PedidoInexistenteException("Drone não encontrado");
-            }
             if (pedidoExistente.getStatus().equals("CRIADO") && !Objects.equals(pedido.getDroneId(), pedidoExistente.getDroneId())
                     && !drone.getStatus().toUpperCase().equals("DISPONIVEL")) {
                 throw new OperacaoInvalidaException("Não é possível alocar este drone para este pedido");
             }
+        } catch (FeignException.NotFound e) {
+            throw new DroneNaoExistenteException("Drone não encontrado");
         } catch (FeignException e) {
             System.out.println(e.getMessage());
             throw new ServicoIndisponivelException("Serviço ms-gerenciador-cadastros indisponível");
