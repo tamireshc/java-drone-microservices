@@ -1,6 +1,5 @@
 package com.example.ms_gerenciador_.cadastros.dto;
 
-import com.example.ms_gerenciador_.cadastros.model.enums.StatusDrone;
 import lombok.Getter;
 import lombok.Setter;
 
