@@ -12,13 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Monitoramento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
-    private Long pedidoId;
-    @Column(nullable = false)
-    private Long droneId;
+    @EmbeddedId
+    private DronePedidoId id;
     private String latitude;
     private String longitude;
 }
