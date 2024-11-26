@@ -1,5 +1,6 @@
 package com.example.ms_monitoramento.service;
 
+import com.example.ms_monitoramento.exceptions.MonitoramentoNaoExistenteException;
 import com.example.ms_monitoramento.model.DronePedidoId;
 import com.example.ms_monitoramento.model.Monitoramento;
 import com.example.ms_monitoramento.repository.MonitoramentoRepository;
@@ -15,7 +16,7 @@ public class MonitoramentoService {
         DronePedidoId id = new DronePedidoId(Long.parseLong(droneId), Long.parseLong(pedidoId));
         Monitoramento monitoramento = monitoramentoRepository.findById(id).orElse(null);
         if (monitoramento == null) {
-            return null;
+            throw new MonitoramentoNaoExistenteException("Monitoramento não encontrado");
         }
         return monitoramento;
     }
