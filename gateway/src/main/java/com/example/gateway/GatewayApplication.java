@@ -23,6 +23,7 @@ public class GatewayApplication {
                 .routes()
                 .route(r -> r.path("/register/**").uri("lb://ms-gerenciador-cadastros"))
                 .route(r -> r.path("/order/**").uri("lb://ms-gerenciador-pedidos"))
+                .route(r -> r.path("/monitor/**").uri("lb://ms-monitoramento"))
                 .build();
     }
 }
