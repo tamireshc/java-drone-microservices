@@ -1,6 +1,6 @@
 package com.example.ms_monitoramento.service;
 
-import com.example.ms_monitoramento.LatitudeLongitudeDTO;
+import com.example.ms_monitoramento.dto.LatitudeLongitudeDTO;
 import com.example.ms_monitoramento.exceptions.MonitoramentoNaoExistenteException;
 import com.example.ms_monitoramento.exceptions.PedidoNaoEncontradoException;
 import com.example.ms_monitoramento.model.Monitoramento;

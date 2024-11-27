@@ -27,12 +27,16 @@ public class RabbitMQConfiguration {
     private String queueDronePendenteDLQ;
     @Value("${rabbitmq.dronedisponivel.queueSinal}")
     private String queueDroneDisponivelSinal;
+    @Value("${rabbitmq.novomonitoramento.queue}")
+    private String queueNovoMonitoramento;
     @Value("${rabbitmq.dronependente.exchange}")
     private String enchangedDronePendente;
     @Value("${rabbitmq.dronependente.exchangeDLQ}")
     private String enchangedDronePendenteDLQ;
     @Value("${rabbitmq.dronedisponivel.exchangeSinal}")
     private String enchangedDronedisponivelSinal;
+    @Value("${rabbitmq.novomonitoramento.exchange}")
+    private String enchangedNovoMonitoramento;
     @Autowired
     @Lazy
     private ListenerController listenerController;
@@ -95,6 +99,11 @@ public class RabbitMQConfiguration {
         return QueueBuilder.durable(queueDroneDisponivelSinal).build();
     }
 
+    @Bean
+    public Queue criarFilaNovoMonitoramento() {
+        return QueueBuilder.durable(queueNovoMonitoramento).build();
+    }
+
     //exchanges
     @Bean
     public FanoutExchange criarFanoutExchangeDronePendente() {
@@ -109,6 +118,11 @@ public class RabbitMQConfiguration {
     @Bean
     public FanoutExchange criarFanoutExchangeDroneDisponivelSinal() {
         return ExchangeBuilder.fanoutExchange(enchangedDronedisponivelSinal).build();
+    }
+
+    @Bean
+    public FanoutExchange criarFanoutExchangeNovoMonitoramento() {
+        return ExchangeBuilder.fanoutExchange(enchangedNovoMonitoramento).build();
     }
 
     //binding do exchanged as filas
@@ -128,5 +142,11 @@ public class RabbitMQConfiguration {
     public Binding criarBindingDronePendenteMsGerenciadorPedidosSinal() {
         return BindingBuilder.bind(criarFilaDroneDisponivelSinal())
                 .to(criarFanoutExchangeDroneDisponivelSinal());
+    }
+
+    @Bean
+    public Binding criarBindingNovoMonitoramentoMsGerenciadorPedidos() {
+        return BindingBuilder.bind(criarFilaNovoMonitoramento())
+                .to(criarFanoutExchangeNovoMonitoramento());
     }
 }

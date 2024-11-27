@@ -28,6 +28,8 @@ public class PedidoService {
     private EnviarParaFilaService enviarParaFilaService;
     @Value("${rabbitmq.dronependente.exchange}")
     private String enchangedDronePendente;
+    @Value("${rabbitmq.novomonitoramento.exchange}")
+    private String enchangedNovoMonitoramento;
 
     @Transactional
     public PedidoResponseDTO cadastrarPedido(PedidoRequestDTO pedidoRequestDTO) {
@@ -148,5 +150,27 @@ public class PedidoService {
         pedidoResponseDTO.setDroneId(pedidoEditado.getDroneId());
 
         return pedidoResponseDTO;
+    }
+
+    @Transactional
+    public void colocarPedidoEM_ROTA(Long id, LatitudeLongitudeDTO latitudeLongitudeDTO) {
+        Pedido pedido = pedidoRepository.findById(id).orElse(null);
+        if (pedido == null) {
+            throw new PedidoInexistenteException("Pedido não encontrado");
+        }
+        if (pedido.getStatus() != StatusPedido.CRIADO) {
+            throw new OperacaoInvalidaException("Pedido não pode ser colocado em rota");
+        }
+        pedido.setStatus(StatusPedido.EM_ROTA);
+        pedidoRepository.save(pedido);
+
+        MonitoramentoDTO monitoramentoDTO = new MonitoramentoDTO();
+        monitoramentoDTO.setPedidoId(pedido.getId());
+        monitoramentoDTO.setDroneId(pedido.getDroneId());
+        monitoramentoDTO.setLatitude(latitudeLongitudeDTO.getLatitude());
+        monitoramentoDTO.setLongitude(latitudeLongitudeDTO.getLongitude());
+
+        //Enviando um novo monitoramento para a fila
+        enviarParaFilaService.enviarNovoMonitoramentoParaFila(monitoramentoDTO, enchangedNovoMonitoramento);
     }
 }

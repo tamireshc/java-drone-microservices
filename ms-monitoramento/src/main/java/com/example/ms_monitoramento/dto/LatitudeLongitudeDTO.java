@@ -1,4 +1,4 @@
-package com.example.ms_monitoramento;
+package com.example.ms_monitoramento.dto;
 
 import lombok.Getter;
 import lombok.Setter;

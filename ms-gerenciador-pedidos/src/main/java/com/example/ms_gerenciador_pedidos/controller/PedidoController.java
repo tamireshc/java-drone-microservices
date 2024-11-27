@@ -1,5 +1,6 @@
 package com.example.ms_gerenciador_pedidos.controller;
 
+import com.example.ms_gerenciador_pedidos.dto.LatitudeLongitudeDTO;
 import com.example.ms_gerenciador_pedidos.dto.PedidoRequestDTO;
 import com.example.ms_gerenciador_pedidos.dto.PedidoResponseDTO;
 import com.example.ms_gerenciador_pedidos.model.Pedido;
@@ -51,5 +52,11 @@ public class PedidoController {
     public ResponseEntity<PedidoResponseDTO> alterarStatusPedido(@PathVariable Long id, @RequestBody PedidoRequestDTO pedido) {
         PedidoResponseDTO pedidoResponseDTO = pedidoService.editarPedido(id, pedido);
         return ResponseEntity.ok(pedidoResponseDTO);
+    }
+
+    @PutMapping("/new_monitor/{id}")
+    public ResponseEntity<Void> colocarPedidoEM_ROTA(@PathVariable Long id, @RequestBody LatitudeLongitudeDTO latitudeLongitudeDTO) {
+        pedidoService.colocarPedidoEM_ROTA(id, latitudeLongitudeDTO);
+        return ResponseEntity.noContent().build();
     }
 }
