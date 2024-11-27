@@ -7,25 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/monitor")
 public class MonitoramentoController {
     @Autowired
     MonitoramentoService monitoramentoService;
 
-    @GetMapping("/{droneId}/{pedidoId}")
-    public ResponseEntity<Monitoramento> buscarMonitoramentoPorId(@PathVariable String droneId, @PathVariable String pedidoId) {
-        Monitoramento monitoramento = monitoramentoService.buscarMonitoramentoPorId(droneId, pedidoId);
+    @GetMapping("/{pedidoId}")
+    public ResponseEntity<List<Monitoramento>> buscarMonitoramentoPorPedidoId(@PathVariable String pedidoId) {
+        List<Monitoramento> monitoramento = monitoramentoService.buscarMonitoramentoPorPedidoId(pedidoId);
         return ResponseEntity.ok(monitoramento);
     }
 
-    @PutMapping("/{droneId}/{pedidoId}")
-    public ResponseEntity<Monitoramento> editarMonitoramento(
-            @PathVariable String droneId,
-            @PathVariable String pedidoId,
+    @PutMapping("/{id}")
+    public ResponseEntity<Monitoramento> editarPontoDeMonitoramento(
+            @PathVariable String id,
             @RequestBody LatitudeLongitudeDTO latitudeLongitudeDTO
     ) {
-        Monitoramento monitoramentoEditado = monitoramentoService.editarMonitoramento(droneId, pedidoId, latitudeLongitudeDTO);
+        Monitoramento monitoramentoEditado = monitoramentoService.editarPontoDeMonitoramento(id, latitudeLongitudeDTO);
         return ResponseEntity.ok(monitoramentoEditado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPontoDeMonitoramento(@PathVariable String id) {
+        monitoramentoService.deletarPontoDeMonitoramento(id);
+        return ResponseEntity.noContent().build();
     }
 }
