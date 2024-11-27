@@ -49,4 +49,9 @@ public class MonitoramentoService {
         Monitoramento monitoramentoExistente = buscarPontoDeMonitoramentoPorId(id);
         monitoramentoRepository.deleteById(Long.parseLong(id));
     }
+
+    public void deletarMonitoramentoDePedido(String pedidoId) {
+        List<Monitoramento> monitoramentoPedido = buscarMonitoramentoPorPedidoId(pedidoId);
+        monitoramentoRepository.deleteAll(monitoramentoPedido);
+    }
 }

@@ -35,4 +35,10 @@ public class MonitoramentoController {
         monitoramentoService.deletarPontoDeMonitoramento(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/order/{pedidoId}")
+    public ResponseEntity<Void> deletarMonitoramentoDePedido(@PathVariable String pedidoId) {
+        monitoramentoService.deletarMonitoramentoDePedido(pedidoId);
+        return ResponseEntity.noContent().build();
+    }
 }
