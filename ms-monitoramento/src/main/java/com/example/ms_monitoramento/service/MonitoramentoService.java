@@ -2,6 +2,7 @@ package com.example.ms_monitoramento.service;
 
 import com.example.ms_monitoramento.LatitudeLongitudeDTO;
 import com.example.ms_monitoramento.exceptions.MonitoramentoNaoExistenteException;
+import com.example.ms_monitoramento.exceptions.PedidoNaoEncontradoException;
 import com.example.ms_monitoramento.model.Monitoramento;
 import com.example.ms_monitoramento.repository.MonitoramentoRepository;
 import jakarta.transaction.Transactional;
@@ -9,17 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MonitoramentoService {
     @Autowired
     private MonitoramentoRepository monitoramentoRepository;
 
+    public Monitoramento cadastrarMonitoramento(Monitoramento monitoramento) {
+        return monitoramentoRepository.save(monitoramento);
+    }
+
     public List<Monitoramento> buscarMonitoramentoPorPedidoId(String pedidoId) {
         List<Monitoramento> monitoramentoPedido = monitoramentoRepository.findByPedidoId(Long.parseLong(pedidoId));
         if (monitoramentoPedido == null) {
-            throw new MonitoramentoNaoExistenteException("Monitoramento não encontrado");
+            throw new PedidoNaoEncontradoException("Pedido não encontrado");
         }
         return monitoramentoPedido;
     }

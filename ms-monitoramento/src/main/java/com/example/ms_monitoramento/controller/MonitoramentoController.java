@@ -1,6 +1,7 @@
 package com.example.ms_monitoramento.controller;
 
 import com.example.ms_monitoramento.LatitudeLongitudeDTO;
+import com.example.ms_monitoramento.exceptions.MonitoramentoNaoExistenteException;
 import com.example.ms_monitoramento.model.Monitoramento;
 import com.example.ms_monitoramento.service.MonitoramentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,18 @@ public class MonitoramentoController {
     @Autowired
     MonitoramentoService monitoramentoService;
 
+    @PostMapping
+    public ResponseEntity<Monitoramento> cadastrarMonitoramento(@RequestBody Monitoramento monitoramento) {
+        Monitoramento monitoramentoCadastrado = monitoramentoService.cadastrarMonitoramento(monitoramento);
+        return ResponseEntity.ok(monitoramentoCadastrado);
+    }
+
     @GetMapping("/{pedidoId}")
     public ResponseEntity<List<Monitoramento>> buscarMonitoramentoPorPedidoId(@PathVariable String pedidoId) {
         List<Monitoramento> monitoramento = monitoramentoService.buscarMonitoramentoPorPedidoId(pedidoId);
+        if (monitoramento.isEmpty()) {
+            throw new MonitoramentoNaoExistenteException("Pedido não encontrado");
+        }
         return ResponseEntity.ok(monitoramento);
     }
 
