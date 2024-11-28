@@ -107,6 +107,10 @@ public class PedidoService {
         if (!StatusPedido.equals(pedido.getStatus())) {
             throw new StatusInvalidoException("Status inexistente");
         }
+        if(pedidoExistente.getStatus().equals("EM_ROTA")){
+            throw new OperacaoInvalidaException("Status do pedido não pode ser alterado para EM_ROTA");
+        }
+
         //Verificando a existencia do remetente, destinatário e endereço
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
                 .busca(pedido.getRemetenteId(),
@@ -160,6 +164,9 @@ public class PedidoService {
         }
         if (pedido.getStatus() != StatusPedido.CRIADO) {
             throw new OperacaoInvalidaException("Pedido não pode ser colocado em rota");
+        }
+        if(pedido.getDroneId() == null){
+            throw new OperacaoInvalidaException("Pedido não possui drone");
         }
         pedido.setStatus(StatusPedido.EM_ROTA);
         pedidoRepository.save(pedido);

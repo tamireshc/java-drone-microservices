@@ -16,13 +16,20 @@ public class MonitoramentoService {
     @Autowired
     private MonitoramentoRepository monitoramentoRepository;
 
+    @Transactional
     public Monitoramento cadastrarMonitoramento(Monitoramento monitoramento) {
+        List<Monitoramento> monitoramentoPedido = buscarMonitoramentoPorPedidoId(String.valueOf(monitoramento.getPedidoId()));
+        return monitoramentoRepository.save(monitoramento);
+    }
+
+    @Transactional
+    public Monitoramento criarMonitoramento(Monitoramento monitoramento) {
         return monitoramentoRepository.save(monitoramento);
     }
 
     public List<Monitoramento> buscarMonitoramentoPorPedidoId(String pedidoId) {
         List<Monitoramento> monitoramentoPedido = monitoramentoRepository.findByPedidoId(Long.parseLong(pedidoId));
-        if (monitoramentoPedido == null) {
+        if (monitoramentoPedido.isEmpty()) {
             throw new PedidoNaoEncontradoException("Pedido não encontrado");
         }
         return monitoramentoPedido;

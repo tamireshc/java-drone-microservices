@@ -13,4 +13,11 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(exception.getMessage());
     }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    public ResponseEntity<String> handlePedidoNaoEncontradoExceptionException(PedidoNaoEncontradoException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(exception.getMessage());
+    }
 }

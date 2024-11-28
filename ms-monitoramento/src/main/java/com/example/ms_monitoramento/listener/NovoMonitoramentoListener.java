@@ -31,7 +31,7 @@ public class NovoMonitoramentoListener {
             monitoramento.setDroneId(monitoramentoDTO.getDroneId());
             monitoramento.setLatitude(monitoramentoDTO.getLatitude());
             monitoramento.setLongitude(monitoramentoDTO.getLongitude());
-            monitoramentoService.cadastrarMonitoramento(monitoramento);
+            monitoramentoService.criarMonitoramento(monitoramento);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
