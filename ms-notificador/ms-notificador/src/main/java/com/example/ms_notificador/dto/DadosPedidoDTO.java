@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class DadosPedidoDTO {
     private Long pedidoId;
+    private String Status;
     private String nome;
     private String telefone;
     private LocalDateTime dataPedido;
