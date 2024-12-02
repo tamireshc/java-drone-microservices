@@ -10,9 +10,9 @@ public class NotificacaoSNSService {
     @Autowired
     private AmazonSNS amazonSNS;
 
-    public void notificar(String telefone, String message) {
+   public void notificar(String telefone, String message) {
         PublishRequest publishRequest = new PublishRequest().withMessage(message)
                 .withPhoneNumber(telefone);
         amazonSNS.publish(publishRequest);
-    }
+   }
 }

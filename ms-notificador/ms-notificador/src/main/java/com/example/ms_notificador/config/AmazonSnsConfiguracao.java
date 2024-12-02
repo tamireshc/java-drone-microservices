@@ -20,6 +20,8 @@ public class AmazonSnsConfiguracao {
 
     @Bean
     public AWSCredentials awsCredentials() {
+        System.out.println("AWS_ACCESS_KEY: " + awsAccessKey);
+        System.out.println("AWS_SECRET_KEY: " + awsSecretKey);
         return new BasicAWSCredentials(awsAccessKey, awsSecretKey);
     }
 
