@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aad03814-7b75-4cfa-99eb-cd0bb4f5ca2c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ms-notificador/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/AmazonSnsConfiguracao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/constants/MensagemConstante.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/service/NotificacaoSNSService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
