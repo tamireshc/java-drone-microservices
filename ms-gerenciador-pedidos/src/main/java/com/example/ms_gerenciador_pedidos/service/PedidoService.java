@@ -30,6 +30,8 @@ public class PedidoService {
     private String enchangedDronePendente;
     @Value("${rabbitmq.novomonitoramento.exchange}")
     private String enchangedNovoMonitoramento;
+    @Value("${rabbitmq.notificador.exchange}")
+    private String enchangedNotificador;
 
     @Transactional
     public PedidoResponseDTO cadastrarPedido(PedidoRequestDTO pedidoRequestDTO) {
@@ -44,6 +46,14 @@ public class PedidoService {
         Pedido pedidoResponse = pedidoRepository.save(pedidoRequestDTO.toPedido(pedidoRequestDTO));
         //Enviado uma solicitação para incluir um drone ao pedido para fila
         enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(pedidoResponse.getId(), enchangedDronePendente);
+        //Enviando uma notificação para a fila
+        DadosPedidoDTO dadosPedidoDTO = new DadosPedidoDTO();
+        dadosPedidoDTO.setPedidoId(pedidoResponse.getId());
+        dadosPedidoDTO.setStatus("CRIADO");
+        dadosPedidoDTO.setNome(remetenteDestinatarioEnderecoDTO.getRemetente().getNome());
+        dadosPedidoDTO.setTelefone(remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone());
+        dadosPedidoDTO.setDataPedido(pedidoResponse.getDataPedido());
+        enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTO, enchangedNotificador);
 
         PedidoResponseDTO pedidoResponseDTO =
                 new PedidoResponseDTO(pedidoResponse.getId(),
@@ -107,7 +117,7 @@ public class PedidoService {
         if (!StatusPedido.equals(pedido.getStatus())) {
             throw new StatusInvalidoException("Status inexistente");
         }
-        if(pedidoExistente.getStatus().equals("EM_ROTA")){
+        if (pedidoExistente.getStatus().equals("EM_ROTA")) {
             throw new OperacaoInvalidaException("Status do pedido não pode ser alterado para EM_ROTA");
         }
 
@@ -165,7 +175,7 @@ public class PedidoService {
         if (pedido.getStatus() != StatusPedido.CRIADO) {
             throw new OperacaoInvalidaException("Pedido não pode ser colocado em rota");
         }
-        if(pedido.getDroneId() == null){
+        if (pedido.getDroneId() == null) {
             throw new OperacaoInvalidaException("Pedido não possui drone");
         }
         pedido.setStatus(StatusPedido.EM_ROTA);

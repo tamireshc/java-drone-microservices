@@ -5,26 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aad03814-7b75-4cfa-99eb-cd0bb4f5ca2c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ms-notificador.iml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/dto/DadosPedidoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/EnviarParaFilaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/EnviarParaFilaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/PedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/PedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/MsNotificadorApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/AmazonSnsConfiguracao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/RabbitMQConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/constants/MensagemConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/dto/DadosPedidoDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/listener/NotificadorListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/service/NotificacaoSNSService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/test/java/com/example/ms_notificador/MsNotificadorApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ms_notificador/constants/MensagemConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ms_notificador/constants/MensagemConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/ms_notificador/listener/NotificadorListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/ms_notificador/listener/NotificadorListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
