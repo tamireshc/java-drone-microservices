@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aad03814-7b75-4cfa-99eb-cd0bb4f5ca2c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/dto/PedidoRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/dto/PedidoRequestDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/PedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/PedidoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

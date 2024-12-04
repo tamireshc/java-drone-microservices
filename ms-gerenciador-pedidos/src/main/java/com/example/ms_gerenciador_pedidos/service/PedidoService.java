@@ -54,8 +54,7 @@ public class PedidoService {
         dadosPedidoDTORemetente.setTelefone(remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone());
         dadosPedidoDTORemetente.setDataPedido(pedidoResponse.getDataPedido());
         enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTORemetente, enchangedNotificador);
-
-        if(pedidoRequestDTO.getRemetenteId() != pedidoRequestDTO.getDestinatarioId()) {
+        if (pedidoRequestDTO.getRemetenteId() != pedidoRequestDTO.getDestinatarioId()) {
             DadosPedidoDTO dadosPedidoDTODestinatario = new DadosPedidoDTO();
             dadosPedidoDTODestinatario.setPedidoId(pedidoResponse.getId());
             dadosPedidoDTODestinatario.setStatus("CRIADO");
@@ -64,7 +63,7 @@ public class PedidoService {
             dadosPedidoDTODestinatario.setDataPedido(pedidoResponse.getDataPedido());
             enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTODestinatario, enchangedNotificador);
         }
-        
+
         PedidoResponseDTO pedidoResponseDTO =
                 new PedidoResponseDTO(pedidoResponse.getId(),
                         pedidoResponse.getDataPedido(),
@@ -127,7 +126,8 @@ public class PedidoService {
         if (!StatusPedido.equals(pedido.getStatus())) {
             throw new StatusInvalidoException("Status inexistente");
         }
-        if (pedidoExistente.getStatus().equals("EM_ROTA")) {
+        //Existe uma rota exclusiva para alterar o status do pedido para EM_ROTA
+        if (pedido.getStatus().equalsIgnoreCase("EM_ROTA")) {
             throw new OperacaoInvalidaException("Status do pedido não pode ser alterado para EM_ROTA");
         }
 
@@ -161,7 +161,35 @@ public class PedidoService {
         pedidoExistente.setEnderecoId(pedido.getEnderecoId());
         pedidoExistente.setStatus(StatusPedido.valueOf(pedido.getStatus().toUpperCase()));
         pedidoExistente.setDroneId(pedido.getDroneId());
+        pedidoExistente.setDataEntrega(pedido.getDataEntrega());
+        if(pedido.getDataEntrega() != null){
+            pedidoExistente.setDataEntrega(pedido.getDataEntrega());
+        }
         Pedido pedidoEditado = pedidoRepository.save(pedidoExistente);
+
+        //Enviando uma notificação para a fila
+        DadosPedidoDTO dadosPedidoDTORemetente = new DadosPedidoDTO();
+        dadosPedidoDTORemetente.setPedidoId(pedidoEditado.getId());
+        dadosPedidoDTORemetente.setStatus(pedidoEditado.getStatus().toString());
+        dadosPedidoDTORemetente.setNome(remetenteDestinatarioEnderecoDTO.getRemetente().getNome());
+        dadosPedidoDTORemetente.setTelefone(remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone());
+        dadosPedidoDTORemetente.setDataPedido(pedidoEditado.getDataPedido());
+        if (pedido.getDataEntrega() != null) {
+            dadosPedidoDTORemetente.setDataEntrega(pedido.getDataEntrega());
+        }
+        enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTORemetente, enchangedNotificador);
+        if (pedido.getRemetenteId() != pedido.getDestinatarioId()) {
+            DadosPedidoDTO dadosPedidoDTODestinatario = new DadosPedidoDTO();
+            dadosPedidoDTODestinatario.setPedidoId(pedidoEditado.getId());
+            dadosPedidoDTODestinatario.setStatus(pedidoEditado.getStatus().toString());
+            dadosPedidoDTODestinatario.setNome(remetenteDestinatarioEnderecoDTO.getDestinatario().getNome());
+            dadosPedidoDTODestinatario.setTelefone(remetenteDestinatarioEnderecoDTO.getDestinatario().getTelefone());
+            dadosPedidoDTODestinatario.setDataPedido(pedidoEditado.getDataPedido());
+            if (pedido.getDataEntrega() != null) {
+                dadosPedidoDTODestinatario.setDataEntrega(pedido.getDataEntrega());
+            }
+            enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTODestinatario, enchangedNotificador);
+        }
         //Convertendo a resposta para o DTO
         PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
         pedidoResponseDTO.setId(id);

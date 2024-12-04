@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 public class PedidoRequestDTO {
     private LocalDateTime dataPedido;
+    private LocalDateTime dataEntrega;
     private String status;
     private Long enderecoId;
     private Long remetenteId;
@@ -22,6 +23,7 @@ public class PedidoRequestDTO {
         pedido.setEnderecoId(pedidoRequestDTO.getEnderecoId());
         pedido.setRemetenteId(pedidoRequestDTO.getRemetenteId());
         pedido.setDestinatarioId(pedidoRequestDTO.getDestinatarioId());
+        pedido.setDataEntrega(pedidoRequestDTO.getDataEntrega());
         return pedido;
     }
 }
