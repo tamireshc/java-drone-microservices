@@ -47,14 +47,24 @@ public class PedidoService {
         //Enviado uma solicitação para incluir um drone ao pedido para fila
         enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(pedidoResponse.getId(), enchangedDronePendente);
         //Enviando uma notificação para a fila
-        DadosPedidoDTO dadosPedidoDTO = new DadosPedidoDTO();
-        dadosPedidoDTO.setPedidoId(pedidoResponse.getId());
-        dadosPedidoDTO.setStatus("CRIADO");
-        dadosPedidoDTO.setNome(remetenteDestinatarioEnderecoDTO.getRemetente().getNome());
-        dadosPedidoDTO.setTelefone(remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone());
-        dadosPedidoDTO.setDataPedido(pedidoResponse.getDataPedido());
-        enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTO, enchangedNotificador);
+        DadosPedidoDTO dadosPedidoDTORemetente = new DadosPedidoDTO();
+        dadosPedidoDTORemetente.setPedidoId(pedidoResponse.getId());
+        dadosPedidoDTORemetente.setStatus("CRIADO");
+        dadosPedidoDTORemetente.setNome(remetenteDestinatarioEnderecoDTO.getRemetente().getNome());
+        dadosPedidoDTORemetente.setTelefone(remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone());
+        dadosPedidoDTORemetente.setDataPedido(pedidoResponse.getDataPedido());
+        enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTORemetente, enchangedNotificador);
 
+        if(pedidoRequestDTO.getRemetenteId() != pedidoRequestDTO.getDestinatarioId()) {
+            DadosPedidoDTO dadosPedidoDTODestinatario = new DadosPedidoDTO();
+            dadosPedidoDTODestinatario.setPedidoId(pedidoResponse.getId());
+            dadosPedidoDTODestinatario.setStatus("CRIADO");
+            dadosPedidoDTODestinatario.setNome(remetenteDestinatarioEnderecoDTO.getDestinatario().getNome());
+            dadosPedidoDTODestinatario.setTelefone(remetenteDestinatarioEnderecoDTO.getDestinatario().getTelefone());
+            dadosPedidoDTODestinatario.setDataPedido(pedidoResponse.getDataPedido());
+            enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTODestinatario, enchangedNotificador);
+        }
+        
         PedidoResponseDTO pedidoResponseDTO =
                 new PedidoResponseDTO(pedidoResponse.getId(),
                         pedidoResponse.getDataPedido(),
