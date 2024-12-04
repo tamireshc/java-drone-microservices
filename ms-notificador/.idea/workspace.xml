@@ -5,11 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aad03814-7b75-4cfa-99eb-cd0bb4f5ca2c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ms-notificador.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/MsNotificadorApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/MsNotificadorApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/AmazonSnsConfiguracao.java" beforeDir="false" afterPath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/AmazonSnsConfiguracao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/service/NotificacaoSNSService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/service/NotificacaoSNSService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/MsNotificadorApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/AmazonSnsConfiguracao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/config/RabbitMQConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/constants/MensagemConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/dto/DadosPedidoDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/listener/NotificadorListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/java/com/example/ms_notificador/service/NotificacaoSNSService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificador/src/test/java/com/example/ms_notificador/MsNotificadorApplicationTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,23 +41,36 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2pezBCWE8M4kVIQivLLyd8oj7pT" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.MsNotificadorApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/tamires/Desktop/microservico/MSnotificacao"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MsNotificadorApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/tamireshc/Desktop/java-drone-microservices/ms-notificador/ms-notificador&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ms-notificador" />
+      <recent name="$PROJECT_DIR$/ms-notificador/src" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="MsNotificadorApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.ms_notificador.MsNotificadorApplication" />

@@ -13,15 +13,22 @@ import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 @Configuration
 public class AmazonSnsConfiguracao {
     // Configuração do Amazon SNS
-    Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+
+    // Carregar o Dotenv em um bloco estático
+    private static final Dotenv dotenv;
+
+    static {
+        dotenv = Dotenv.configure().ignoreIfMissing().load();
+    }
 
     private final String awsAccessKey = dotenv.get("AWS_ACCESS_KEY");
     private final String awsSecretKey = dotenv.get("AWS_SECRET_KEY");
 
+
     @Bean
     public AWSCredentials awsCredentials() {
-        System.out.println("AWS_ACCESS_KEY: " + awsAccessKey);
-        System.out.println("AWS_SECRET_KEY: " + awsSecretKey);
+        System.out.println("AWS_ACCESS_KEYI: " + awsAccessKey);
+        System.out.println("AWS_SECRET_KEYI: " + awsSecretKey);
         return new BasicAWSCredentials(awsAccessKey, awsSecretKey);
     }
 
