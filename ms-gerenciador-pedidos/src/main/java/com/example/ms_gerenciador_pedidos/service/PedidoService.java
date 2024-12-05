@@ -80,12 +80,15 @@ public class PedidoService {
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
                 .busca(pedido.getRemetenteId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
 
-        PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO(pedido.getId(),
-                pedido.getDataPedido(),
-                pedido.getStatus().toString(),
-                remetenteDestinatarioEnderecoDTO.getEndereco(),
-                remetenteDestinatarioEnderecoDTO.getRemetente(),
-                remetenteDestinatarioEnderecoDTO.getDestinatario());
+        PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
+        pedidoResponseDTO.setId(pedido.getId());
+        pedidoResponseDTO.setDataPedido(pedido.getDataPedido());
+        pedidoResponseDTO.setDataEntrega(pedido.getDataEntrega());
+        pedidoResponseDTO.setStatus(pedido.getStatus().toString());
+        pedidoResponseDTO.setRemetente(remetenteDestinatarioEnderecoDTO.getRemetente());
+        pedidoResponseDTO.setDestinatario(remetenteDestinatarioEnderecoDTO.getDestinatario());
+        pedidoResponseDTO.setEndereco(remetenteDestinatarioEnderecoDTO.getEndereco());
+        pedidoResponseDTO.setDroneId(pedido.getDroneId());
         return pedidoResponseDTO;
     }
 
