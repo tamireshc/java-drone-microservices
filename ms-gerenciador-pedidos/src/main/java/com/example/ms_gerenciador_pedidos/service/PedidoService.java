@@ -162,7 +162,7 @@ public class PedidoService {
         pedidoExistente.setStatus(StatusPedido.valueOf(pedido.getStatus().toUpperCase()));
         pedidoExistente.setDroneId(pedido.getDroneId());
         pedidoExistente.setDataEntrega(pedido.getDataEntrega());
-        if(pedido.getDataEntrega() != null){
+        if (pedido.getDataEntrega() != null) {
             pedidoExistente.setDataEntrega(pedido.getDataEntrega());
         }
         Pedido pedidoEditado = pedidoRepository.save(pedidoExistente);
@@ -216,16 +216,32 @@ public class PedidoService {
         if (pedido.getDroneId() == null) {
             throw new OperacaoInvalidaException("Pedido não possui drone");
         }
+        //Salvando as alterações no banco de dados
         pedido.setStatus(StatusPedido.EM_ROTA);
         pedidoRepository.save(pedido);
 
-        MonitoramentoDTO monitoramentoDTO = new MonitoramentoDTO();
-        monitoramentoDTO.setPedidoId(pedido.getId());
-        monitoramentoDTO.setDroneId(pedido.getDroneId());
-        monitoramentoDTO.setLatitude(latitudeLongitudeDTO.getLatitude());
-        monitoramentoDTO.setLongitude(latitudeLongitudeDTO.getLongitude());
-
+        // Criando um novo monitoramento
+        MonitoramentoDTO monitoramentoDTO = new MonitoramentoDTO(pedido.getId(), pedido.getDroneId(),
+                latitudeLongitudeDTO.getLatitude(), latitudeLongitudeDTO.getLongitude());
         //Enviando um novo monitoramento para a fila
         enviarParaFilaService.enviarNovoMonitoramentoParaFila(monitoramentoDTO, enchangedNovoMonitoramento);
+
+        //Enviando uma notificação para a fila
+        RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
+                .busca(pedido.getRemetenteId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
+
+        DadosPedidoDTO dadosPedidoDTORemetente = new DadosPedidoDTO(pedido.getId(), "EM_ROTA",
+                remetenteDestinatarioEnderecoDTO.getRemetente().getNome(),
+                remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone(),
+                pedido.getDataPedido(), null);
+        enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTORemetente, enchangedNotificador);
+
+        if (pedido.getRemetenteId() != pedido.getDestinatarioId()) {
+            DadosPedidoDTO dadosPedidoDTODestinatario = new DadosPedidoDTO(pedido.getId(), "EM_ROTA",
+                    remetenteDestinatarioEnderecoDTO.getDestinatario().getNome(),
+                    remetenteDestinatarioEnderecoDTO.getDestinatario().getTelefone(),
+                    pedido.getDataPedido(), null);
+            enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTODestinatario, enchangedNotificador);
+        }
     }
 }
