@@ -47,20 +47,17 @@ public class PedidoService {
         //Enviado uma solicitação para incluir um drone ao pedido para fila
         enviarParaFilaService.enviarBuscaDeDroneDisponivelParaFila(pedidoResponse.getId(), enchangedDronePendente);
         //Enviando uma notificação para a fila
-        DadosPedidoDTO dadosPedidoDTORemetente = new DadosPedidoDTO();
-        dadosPedidoDTORemetente.setPedidoId(pedidoResponse.getId());
-        dadosPedidoDTORemetente.setStatus("CRIADO");
-        dadosPedidoDTORemetente.setNome(remetenteDestinatarioEnderecoDTO.getRemetente().getNome());
-        dadosPedidoDTORemetente.setTelefone(remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone());
-        dadosPedidoDTORemetente.setDataPedido(pedidoResponse.getDataPedido());
+        DadosPedidoDTO dadosPedidoDTORemetente = new DadosPedidoDTO(pedidoResponse.getId(), "CRIADO",
+                remetenteDestinatarioEnderecoDTO.getRemetente().getNome(),
+                remetenteDestinatarioEnderecoDTO.getRemetente().getTelefone(),
+                pedidoResponse.getDataPedido(), null);
         enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTORemetente, enchangedNotificador);
+
         if (pedidoRequestDTO.getRemetenteId() != pedidoRequestDTO.getDestinatarioId()) {
-            DadosPedidoDTO dadosPedidoDTODestinatario = new DadosPedidoDTO();
-            dadosPedidoDTODestinatario.setPedidoId(pedidoResponse.getId());
-            dadosPedidoDTODestinatario.setStatus("CRIADO");
-            dadosPedidoDTODestinatario.setNome(remetenteDestinatarioEnderecoDTO.getDestinatario().getNome());
-            dadosPedidoDTODestinatario.setTelefone(remetenteDestinatarioEnderecoDTO.getDestinatario().getTelefone());
-            dadosPedidoDTODestinatario.setDataPedido(pedidoResponse.getDataPedido());
+            DadosPedidoDTO dadosPedidoDTODestinatario = new DadosPedidoDTO(pedidoResponse.getId(), "CRIADO",
+                    remetenteDestinatarioEnderecoDTO.getDestinatario().getNome(),
+                    remetenteDestinatarioEnderecoDTO.getDestinatario().getTelefone(),
+                    pedidoResponse.getDataPedido(), null);
             enviarParaFilaService.enviarNotificacaoParaFila(dadosPedidoDTODestinatario, enchangedNotificador);
         }
 
@@ -83,14 +80,12 @@ public class PedidoService {
         RemetenteDestinatarioEnderecoDTO remetenteDestinatarioEnderecoDTO = buscarRemetenteDestinatarioEnderecoService
                 .busca(pedido.getRemetenteId(), pedido.getDestinatarioId(), pedido.getEnderecoId());
 
-        PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
-        pedidoResponseDTO.setId(pedido.getId());
-        pedidoResponseDTO.setDataPedido(pedido.getDataPedido());
-        pedidoResponseDTO.setStatus(pedido.getStatus().toString());
-        pedidoResponseDTO.setEndereco(remetenteDestinatarioEnderecoDTO.getEndereco());
-        pedidoResponseDTO.setRemetente(remetenteDestinatarioEnderecoDTO.getRemetente());
-        pedidoResponseDTO.setDestinatario(remetenteDestinatarioEnderecoDTO.getDestinatario());
-        pedidoResponseDTO.setDroneId(pedido.getDroneId());
+        PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO(pedido.getId(),
+                pedido.getDataPedido(),
+                pedido.getStatus().toString(),
+                remetenteDestinatarioEnderecoDTO.getEndereco(),
+                remetenteDestinatarioEnderecoDTO.getRemetente(),
+                remetenteDestinatarioEnderecoDTO.getDestinatario());
         return pedidoResponseDTO;
     }
 
@@ -200,7 +195,6 @@ public class PedidoService {
         pedidoResponseDTO.setDestinatario(remetenteDestinatarioEnderecoDTO.getDestinatario());
         pedidoResponseDTO.setEndereco(remetenteDestinatarioEnderecoDTO.getEndereco());
         pedidoResponseDTO.setDroneId(pedidoEditado.getDroneId());
-
         return pedidoResponseDTO;
     }
 
