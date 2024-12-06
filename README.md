@@ -76,7 +76,6 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 	],
 	"telefone": "5531987191234"
 }
-"telefone":
   ```
 :white_check_mark: STATUS 200 OK
 
@@ -114,7 +113,7 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
   ```
 :white_check_mark: STATUS 200 OK
 
-- Edição dos dados cadastrais de um usuário
+- Edição os dados cadastrais de um usuário
 
 ```
  PUT /register/user/id/:id
@@ -176,6 +175,103 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 }
   ```
 :white_check_mark: STATUS 201 CREATED
+
+- Busca os endereços de usuário pelo seu id
+
+```
+GET /register/address/user/:id
+```
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+[
+	{
+		"id": 1,
+		"logradouro": "Andradas",
+		"numero": 200,
+		"complemento": "apt101",
+		"bairro": "Centro",
+		"cidade": "Belo Horizonte",
+		"estado": "Minas Gerais",
+		"cep": "30120-010",
+		"latitude": "-19.8244097",
+		"longitude": "-43.9788706",
+	}
+]
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Busca um endereço pelo seu id
+
+```
+GET /register/address/:id
+```
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+	{
+		"id": 1,
+		"logradouro": "Andradas",
+		"numero": 200,
+		"complemento": "apt101",
+		"bairro": "Centro",
+		"cidade": "Belo Horizonte",
+		"estado": "Minas Gerais",
+		"cep": "30120-010",
+		"latitude": "-19.8244097",
+		"longitude": "-43.9788706",
+	}
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Deleta um endereço pelo seu id
+
+```
+DELETE /register/address/:id
+```
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+Endereço deletado com sucesso
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Edita um endereço pelo seu  id
+
+```
+PUT /register/address/:id
+```
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `logradouro` | `string` | logradouro do usuário |
+| `numero` | `long` |   numero do logradouro |
+| `complemento` | `string` |  complemento do logradouro |
+| `bairro` | `string` |   bairro do logradouro |
+| `cidade` | `string` |   cidade do usuário |
+| `estado` | `string` |   estado a qual a cidade pertence|
+| `cep` | `string` |   CEP do logradouro|
+
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+{
+    "id": 1,
+    "logradouro": "Afonso Pena",
+    "numero": 84,
+    "complemento": "apt202",
+    "bairro": "Centro",
+    "cidade": "Belo Horizonte",
+    "estado": "Minas Gerais",
+    "cep": "30130002",
+    "latitude": "-19.9650549",
+    "longitude": "-43.803484",
+}
+  ```
+:white_check_mark: STATUS 200 OK
 
 </details>
 
