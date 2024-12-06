@@ -407,6 +407,40 @@ OBS: Não é possível buscar um drone com status diferente dos pré-estabelecid
   ```
 :white_check_mark: STATUS 200 OK
 
+</details>
+<details>
+<summary><strong>:x: Casos de Falhas  </strong></summary><br/>
 
+- Ao tentar cadastrar um usuário com CPF e e-mail já existentes na base de dados deve  emitir a exceção `UsuarioExistenteException`<br><br>
+:warning: STATUS 409 - CONFLICT
+ ```json
+	CPF ou Email já cadastrado
+  ```
+- Ao buscar por um usuário inexistente deve emitir a exceção `UsuarioNaoExistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Usuário não encontrado
+  ```
+- Ao tentar edita o CPF de um usuário deve  emitir a exceção `EdicaoNaoPermitidaException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Edição não permitida
+  ```
+- Ao buscar por um endereço inexistente deve emitir a exceção `EnderecoNaoExistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Endereço não encontrado
+  ```
+- Ao tentar cadastrar, editar ou buscar por um drone com um status diferente dos pré-estabelecidos deve  emitir a exceção `StatusInvalidoExceptionn`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Status inexistente
+ ```
+
+- Ao buscar por um drone inexistente deve emitir a exceção `DroneNaoExistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Drone não encontrado
+  ```
 </details>
 
