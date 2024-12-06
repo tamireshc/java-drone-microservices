@@ -111,7 +111,6 @@ OBS: Não é possível cadastrar CPF e E-mail duplicados.
 	],
 	"telefone": "5531987191234"
 }
-"telefone":
   ```
 :white_check_mark: STATUS 200 OK
 
@@ -444,3 +443,181 @@ OBS: Não é possível buscar um drone com status diferente dos pré-estabelecid
   ```
 </details>
 
+<details>
+<summary><strong>:gift: Microserviço Gerenciador de Pedidos  </strong></summary><br/>
+	
+- Cadastro de um Pedido
+
+```
+POST /order
+```
+  
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `dataPedido` | `LocalDateTime` | data do pedido |
+| `status:` | `string` |  "criado"  |
+| `remetenteId` | `long` |  id de identificação do remetente |
+| `destinatarioId` | `long` |   id de identificação do destinatário |
+| `enderecoId` | `long` |   id de identificação do endereço de entrega |
+
+  Corpo da resposta: <br/>
+  
+  ```json
+  {
+	"id": 1,
+	"dataPedido": "2024-12-03T10:15:30",
+	"dataEntrega": null,
+	"status": "CRIADO",
+	"endereco": {
+		"logradouro": "Afonso Pena",
+		"numero": 84,
+		"complemento": "apt202",
+		"bairro": "Centro",
+		"cidade": "Belo Horizonte",
+		"estado": "Minas Gerais",
+		"cep": "30130002"
+	},
+	"remetente": {
+		"id": 1,
+		"nome": "Joe",
+		"sobrenome": "Batista",
+		"email": "je@gmail.com",
+		"telefone": "5531987191832"
+	},
+	"destinatario": {
+		"id": 1,
+		"nome": "Joe",
+		"sobrenome": "Batista",
+		"email": "je@gmail.com",
+		"telefone": "5531987191832"
+	},
+	"droneId": null
+}
+
+  ```
+:white_check_mark: STATUS 201 CREATED
+
+- Busca um pedido pelo id
+
+```
+GET /order/:id
+```
+Corpo da resposta: <br/>
+
+  ```json
+  {
+	"id": 1,
+	"dataPedido": "2024-12-03T10:15:30",
+	"dataEntrega": null,
+	"status": "CRIADO",
+	"endereco": {
+		"logradouro": "Afonso Pena",
+		"numero": 84,
+		"complemento": "apt202",
+		"bairro": "Centro",
+		"cidade": "Belo Horizonte",
+		"estado": "Minas Gerais",
+		"cep": "30130002"
+	},
+	"remetente": {
+		"id": 1,
+		"nome": "Joe",
+		"sobrenome": "Batista",
+		"email": "je@gmail.com",
+		"telefone": "5531987191832"
+	},
+	"destinatario": {
+		"id": 1,
+		"nome": "Joe",
+		"sobrenome": "Batista",
+		"email": "je@gmail.com",
+		"telefone": "5531987191832"
+	},
+	"droneId": 1
+}
+
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Busca todos os pedidos de um usuário pelo id do usuário
+
+```
+GET /order/user/:id
+```
+OBS: Não é possível buscar um pedido pelo usuário id quando o microserviço gerenciador de cadastros está indisponível.
+
+Corpo da resposta: <br/>
+
+  ```json
+  
+[
+	{
+	"id": 1,
+	"dataPedido": "2007-12-03T10:15:30",
+	"dataEntrega": null,
+	"status": "CRIADO",
+	"enderecoId": 1,
+	"remetenteId": 1,
+	"destinatarioId": 2,
+	"droneId": null
+	}
+]
+  
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Edita um pedido pelo id
+
+```
+PUT /order/:id
+```
+OBS: Não é possível editar um pedido com status diferente dos pré-estabelecidos, com remetente, destinatário, endereço e drone não cadastrados e quando o microserviço gerenciador de cadastros está indisponível. Não é possível editar o drone de um pedido quando o seu status é diferente do disponível, ou quando o pedido já está em rota ou finalizado.
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `dataPedido` | `LocalDateTime` | data do pedido |
+| `dataEntrega` | `LocalDateTime` | data do pedido |
+| `status` | `string` |  "criado"  |
+| `remetenteId` | `long` |  id de identificação do remetente |
+| `destinatarioId` | `long` |   id de identificação do destinatário |
+| `enderecoId` | `long` |   id de identificação do endereço de entrega |
+| `droneId` | `long` |   id de identificação do drone destinado a realizar a entrega |
+
+  Corpo da resposta: <br/>
+  
+  ```json
+  {
+	"id": 1,
+	"dataPedido": "2024-12-03T10:15:30",
+	"dataEntrega": "2024-12-03T10:15:30",
+	"status": "CANCELADO",
+	"endereco": {
+		"logradouro": "Afonso Pena",
+		"numero": 84,
+		"complemento": "apt202",
+		"bairro": "Centro",
+		"cidade": "Belo Horizonte",
+		"estado": "Minas Gerais",
+		"cep": "30130002"
+	},
+	"remetente": {
+		"id": 1,
+		"nome": "Joe",
+		"sobrenome": "Batista",
+		"email": "je@gmail.com",
+		"telefone": "5531987191832"
+	},
+	"destinatario": {
+		"id": 1,
+		"nome": "Joe",
+		"sobrenome": "Batista",
+		"email": "je@gmail.com",
+		"telefone": "5531987191832"
+	},
+	"droneId": 3
+}
+
+  ```
+:white_check_mark: STATUS 200 OK
+
+</details>
