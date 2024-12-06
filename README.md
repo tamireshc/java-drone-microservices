@@ -23,6 +23,8 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 ```
   POST /register/user
 ```
+OBS: Não é possível cadastrar CPF e E-mail duplicados.
+
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `nome` | `string` |   nome do usuário |
@@ -118,6 +120,8 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 ```
  PUT /register/user/id/:id
 ```
+OBS: Não é permitido editar o CPF.
+
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `nome` | `string` |   nome do usuário |
@@ -146,6 +150,8 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 ```
  POST /register/address
 ```
+OBS: Não é possível cadastrar um endereço para um usuário inexistente.
+
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `usuarioId` | `long` |   id do usuário |
@@ -272,6 +278,135 @@ PUT /register/address/:id
 }
   ```
 :white_check_mark: STATUS 200 OK
+
+- Cadastro um Drone
+
+```
+POST /register/drone
+```
+OBS: Não é possível cadastrar um drone com um status inexistente
+  
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `modelo` | `string` | modelo do drone |
+| `marca` | `string` |  marca do drone  |
+| `ano` | `string` |  ano de fabricação do drone |
+| `status` | `string` |   enun dos status possíveis para o drone|
+
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+{
+"id": 1,
+"modelo": "x",
+"marca": "DJI",
+"ano": "2018",
+"status": "DISPONIVEL"
+}
+  ```
+:white_check_mark: STATUS 201 CREATED
+
+- Busca um drone pelo id
+
+```
+GET /register/drone/:id
+```
+
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+{
+"id": 1,
+"modelo": "x",
+"marca": "DJI",
+"ano": "2018",
+"status": "DISPONIVEL"
+}
+  ```
+:white_check_mark: STATUS 200 ok
+
+- Edita o status de um drone
+
+```
+PUT /register/drone/:id/status/:status
+```
+OBS: Não é possível editar um drone com status diferente dos pré-estabelecidos.
+
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+{
+"id": 1,
+"modelo": "x",
+"marca": "DJI",
+"ano": "2018",
+"status": "EM_ROTA"
+}
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Busca todos os drones cadastrados
+
+```
+GET /register/drone
+```
+
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+[
+	{
+		"id": 1,
+		"modelo": "x",
+		"marca": "DJI",
+		"ano": "2018",
+		"status": "EM_ROTA"
+	},
+	{
+		"id": 2,
+		"modelo": " z908",
+		"marca": "xiaomi",
+		"ano": "2024",
+		"status": "DISPONIVEL"
+	}
+]
+  ```
+:white_check_mark: STATUS 200 OK
+
+- Busca drones por tipo de status
+
+```
+GET /register/drone/status/:status
+```
+OBS: Não é possível buscar um drone com status diferente dos pré-estabelecidos.
+
+  Corpo da resposta: <br/>
+  
+  
+  ```json
+[
+	{
+		"id": 1,
+		"modelo": "x",
+		"marca": "DJI",
+		"ano": "2018",
+		"status": "EM_ROTA"
+	},
+	{
+		"id": 2,
+		"modelo": " z908",
+		"marca": "xiaomi",
+		"ano": "2024",
+		"status": "EM_ROTA"
+	}
+]
+  ```
+:white_check_mark: STATUS 200 OK
+
 
 </details>
 
