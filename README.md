@@ -18,12 +18,13 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 <details>
 <summary><strong>:page_with_curl: Microserviço Gerenciador de Cadastros  </strong></summary><br/>
 
-- Cadastro de usuário
+- Cadastrar um usuário
 
 ```
   POST /register/user
 ```
-OBS: Não é possível cadastrar CPF e E-mail duplicados.
+:point_right: Não é possível cadastrar CPF e E-mail duplicados.<br>
+:point_right: As senhas são salvas no banco de dados criptografadas com o algorítimo "SHA-256".<br>
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -48,7 +49,7 @@ OBS: Não é possível cadastrar CPF e E-mail duplicados.
   ```
 :white_check_mark: STATUS 201 CREATED
 
-- Busca de usuário por CPF
+- Buscar um usuário por CPF
 
 ```
   GET /register/user/cpf/:cpf
@@ -81,7 +82,7 @@ OBS: Não é possível cadastrar CPF e E-mail duplicados.
   ```
 :white_check_mark: STATUS 200 OK
 
-- Busca de usuário por id
+- Buscar um usuário por id
 
 ```
   GET /register/user/id/:id
@@ -114,12 +115,12 @@ OBS: Não é possível cadastrar CPF e E-mail duplicados.
   ```
 :white_check_mark: STATUS 200 OK
 
-- Edição os dados cadastrais de um usuário
+- Edição dos dados cadastrais de um usuário
 
 ```
  PUT /register/user/id/:id
 ```
-OBS: Não é permitido editar o CPF.
+:point_right: Não é permitido editar o CPF.
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -149,7 +150,8 @@ OBS: Não é permitido editar o CPF.
 ```
  POST /register/address
 ```
-OBS: Não é possível cadastrar um endereço para um usuário inexistente.
+:point_right: Não é possível cadastrar um endereço para um usuário inexistente.<br>
+:point_right: Ao cadastrar um novo endereço uma uma mensagem é enviada a uma fila que irá proceder com uma requisição ao serviço distancematrix.ai para burcar os valores de latitude e longitude do endereço cadastrado e completar as informações no banco de dados.
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -249,6 +251,8 @@ Endereço deletado com sucesso
 ```
 PUT /register/address/:id
 ```
+:point_right: Ao cadastrar um novo endereço uma mensagem é enviada a uma fila que irá proceder com uma requisição ao serviço distancematrix.ai para burcar os valores de latitude e longitude do endereço cadastrado e completar as informações no banco de dados.
+
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `logradouro` | `string` | logradouro do usuário |
@@ -283,7 +287,8 @@ PUT /register/address/:id
 ```
 POST /register/drone
 ```
-OBS: Não é possível cadastrar um drone com um status inexistente
+:point_right: Não é possível cadastrar um drone com um status inexistente. <br>
+:point_right: Ao cadastrar um novo drone com status Disponível é enviado uma mensagem para uma fila que irá verificar se há algum pedido com pendencia de alocação de um drone para realizar a entrega.
   
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -331,7 +336,9 @@ GET /register/drone/:id
 ```
 PUT /register/drone/:id/status/:status
 ```
-OBS: Não é possível editar um drone com status diferente dos pré-estabelecidos.
+:point_right: Não é possível editar um drone com status diferente dos pré-estabelecidos.<br>
+:point_right: Ao editar um drone para o status Disponível é enviado uma mensagem para uma fila que irá verificar se há algum pedido com pendencia de alocação de um drone para realizar a entrega.
+
 
   Corpo da resposta: <br/>
   
@@ -381,7 +388,7 @@ GET /register/drone
 ```
 GET /register/drone/status/:status
 ```
-OBS: Não é possível buscar um drone com status diferente dos pré-estabelecidos.
+:point_right:: Não é possível buscar um drone com status diferente dos pré-estabelecidos.
 
   Corpo da resposta: <br/>
   
