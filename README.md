@@ -409,7 +409,7 @@ OBS: Não é possível buscar um drone com status diferente dos pré-estabelecid
 
 </details>
 <details>
-<summary><strong>:x: Casos de Falhas  </strong></summary><br/>
+<summary><strong>:x: Casos de Falhas do Microserviço Gerenciador de Cadastros </strong></summary><br/>
 
 - Ao tentar cadastrar um usuário com CPF e e-mail já existentes na base de dados deve  emitir a exceção `UsuarioExistenteException`<br><br>
 :warning: STATUS 409 - CONFLICT
