@@ -151,7 +151,7 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
  POST /register/address
 ```
 :point_right: Não é possível cadastrar um endereço para um usuário inexistente.<br>
-:point_right: Ao cadastrar um novo endereço uma uma mensagem é enviada a uma fila que irá proceder com uma requisição ao serviço distancematrix.ai para burcar os valores de latitude e longitude do endereço cadastrado e completar as informações no banco de dados.
+:point_right: Ao cadastrar um novo endereço uma mensagem é enviada a uma fila que irá proceder com uma requisição ao serviço distancematrix.ai para burcar os valores de latitude e longitude do endereço cadastrado e completar as informações no banco de dados.
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -388,7 +388,7 @@ GET /register/drone
 ```
 GET /register/drone/status/:status
 ```
-:point_right:: Não é possível buscar um drone com status diferente dos pré-estabelecidos.
+:point_right: Não é possível buscar um drone com status diferente dos pré-estabelecidos.
 
   Corpo da resposta: <br/>
   
@@ -458,6 +458,10 @@ GET /register/drone/status/:status
 ```
 POST /order
 ```
+:point_right: Ao cadastrar um novo pedido é verificado de forma sincrona se o remetente, destinatário e o endereço estão cadastrado no banco de dados.<br>
+:point_right: Ao cadastrar o pedido é enviado uma mensagem para uma fila que irá buscar um drone com status disponível para realizar a entrega.<br>
+:point_right:Ao cadastrar um pedido o remetente é o destinatário são notificados via SMS. <br>
+:point_right: Não é possível cadastrar um pedido quando o microserviço gerenciador de cadastros está indisponível.<br>
   
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -509,6 +513,8 @@ POST /order
 ```
 GET /order/:id
 ```
+:point_right: Não é possível buscar um pedido quando o microserviço gerenciador de cadastros está indisponível.<br>
+
 Corpo da resposta: <br/>
 
   ```json
@@ -551,7 +557,7 @@ Corpo da resposta: <br/>
 ```
 GET /order/user/:id
 ```
-OBS: Não é possível buscar um pedido pelo usuário id quando o microserviço gerenciador de cadastros está indisponível.
+:point_right: Não é possível buscar um pedido pelo usuário id quando o microserviço gerenciador de cadastros está indisponível.<br>
 
 Corpo da resposta: <br/>
 
@@ -578,7 +584,9 @@ Corpo da resposta: <br/>
 ```
 PUT /order/:id
 ```
-OBS: Não é possível editar um pedido com status diferente dos pré-estabelecidos, com remetente, destinatário, endereço e drone não cadastrados e quando o microserviço gerenciador de cadastros está indisponível. Não é possível editar o drone de um pedido quando o seu status é diferente do disponível, ou quando o pedido já está em rota ou finalizado.
+:point_right: Não é possível editar um pedido com status diferente dos pré-estabelecidos, com remetente, destinatário, endereço e drone não cadastrados e quando o microserviço gerenciador de cadastros está indisponível. Não é possível editar o drone de um pedido quando o seu status é diferente do disponível, ou quando o pedido já está em rota ou finalizado.<br>
+:point_right: Não possível editar o status do pedido para "EM_ROTA" pois existe uma endpoint exclusivo para esta alteração.<br>
+:point_right: Ao editar o status de um pedido o remetente e destinatário recebem um SMS notificado da ação.<br>
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
@@ -626,5 +634,22 @@ OBS: Não é possível editar um pedido com status diferente dos pré-estabeleci
 
   ```
 :white_check_mark: STATUS 200 OK
+
+- Edita o status do pedido para EM_ROTA
+
+```
+PUT /order/new_monitor/:idPedido
+```
+:point_right: O pedido somente pode ser colocado EM_ROTA caso o seu status esteja como CRIADO.<br>
+:point_right: Ao se colocar um pedido EM_ROTA é envidao uma mensagem para uma fila que irá criar o seu primeiro ponto de monitoramento.<br>
+:point_right: Ao colocar o pedido EM_ROTA o remetente e destinatário recebem um SMS de notificação.<br>
+
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `latitude` | `string` |   latitude do endereço de onde houve a saída do drone |
+| `longitude` | `string` |  longitude do endereço de onde houve a saída do drone  |
+
+ :white_check_mark: STATUS 204 NO CONTENT
 
 </details>
