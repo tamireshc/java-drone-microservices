@@ -653,3 +653,57 @@ PUT /order/new_monitor/:idPedido
  :white_check_mark: STATUS 204 NO CONTENT
 
 </details>
+<details>
+<summary><strong>:x: Casos de Falhas do Microserviço Gerenciador de Pedidos </strong></summary><br/>
+
+- Ao tentar cadastrar um pedido com um status diferente dos pré-estabelecidos deve  emitir a exceção `StatusInvalidoException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Status inexistente
+  ```
+- Ao buscar por um pedido inexistente deve emitir a exceção `PedidoInexistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Pedido não encontrado
+  ```
+- Ao buscar por um pedido pelo usuárioId inexistente deve emitir a exceção `UsuarioNaoExistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Usuário não encontrado
+  ```
+- Ao buscars os dados do remetente, destinatário e endereço com o ms-gerenciador de cadastros indisponível deve  emitir a exceção `ServicoIndisponivelException`<br><br>
+:x: STATUS 503 - SERVICE_UNAVAILABLE
+ ```json
+	Serviço ms-gerenciador-cadastros indisponível
+  ```
+- Ao tentar editar o o status de um pedido para "EM_ROTA" fora do endpoint designado para esta ação  deve  emitir a exceção `OperacaoInvalidaException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Status do pedido não pode ser alterado para EM_ROTA
+  ```
+- Ao tentar alocar um drone para um pedido e este não possuir o status DISPONÍVEL deve  emitir a exceção `OperacaoInvalidaException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Não é possível alocar este drone para este pedido
+  ```
+- Ao tentar alocar para um pedido um drone não existente na base de dados deve emitir a exceção `DroneNaoExistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Drone não encontrado
+  ```
+- Ao tentar alterar o drone de um pedido quem possiu o status "EM_ROTA", "ENTREGUE" ou "CANCELADO" deve  emitir a exceção `OperacaoInvalidaException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Não é possível alterar o drone deste pedido
+ ```
+- Ao tentar colocar EM_ROTA um pedido com status diferente de "CRIADO" deve  emitir a exceção `OperacaoInvalidaException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Pedido não pode ser colocado em rota
+ ```
+- Ao tentar colocar EM_ROTA um pedido que não teve um drone designado deve  emitir a exceção `OperacaoInvalidaException`<br><br>
+:x: STATUS 403 - FORBIDDEN
+ ```json
+	Pedido não possui drone
+ ```		
+</details>
