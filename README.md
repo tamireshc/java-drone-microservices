@@ -805,3 +805,18 @@ DELETE/monitor/order/:pedidoid
  :white_check_mark: STATUS 204 NO CONTENT
  
 </details>
+
+<details>
+<summary><strong>:x: Casos de Falhas do Microserviço de Monitoramento de Drones</strong></summary><br/>
+
+- Ao tentar cadastrar, editar ou buscar por um monitoramento de um pedido inexistente deve  emitir a exceção `PedidoNaoEncontradoException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Pedido não encontrado
+  ```
+- Ao tentar editar ou buscar por um ponto de monitoramento inexistente  deve emitir a exceção `MonitoramentoNaoExistenteException`<br><br>
+:warning: STATUS 404 - NOT FOUND
+ ```json
+	Monitoramento não encontrado
+  ```
+</details>
