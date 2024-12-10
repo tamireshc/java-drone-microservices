@@ -707,3 +707,101 @@ PUT /order/new_monitor/:idPedido
 	Pedido não possui drone
  ```		
 </details>
+
+<details>
+<summary><strong>:telescope: Microserviço Monitoramento de Drones  </strong></summary><br/>
+	
+- Cadastra um ponto de monitoramento
+
+```
+POST/monitor
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `pedidoId` | `long` |   id do pedido |
+| `droneId` | `long` |   id do drone |
+| `latitude` | `string` |   latitude do ponto |
+| `longitude` | `string` |  longitude do ponto |
+
+  Corpo da resposta: <br/>
+  
+  ```json
+{
+	"id": 5,
+	"pedidoId": 1,
+	"droneId": 1,
+	"latitude": "19.000",
+	"longitude": "19.000"
+}
+```
+
+ :white_check_mark: STATUS 201 NO CREATED
+
+ - Busca todos os pontos de monitoramento de um pedido
+
+```
+GET /monitor/:pedidoid
+```
+Corpo da resposta: <br/>
+
+  ```json
+[
+	{
+		"id": 1,
+		"pedidoId": 1,
+		"droneId": 2,
+		"latitude": "19.001",
+		"longitude": "20.002"
+	},
+	{
+		"id": 5,
+		"pedidoId": 1,
+		"droneId": 1,
+		"latitude": "19.002",
+		"longitude": "20.002"
+	}
+]
+```
+ :white_check_mark: STATUS 200 OK
+
+ - Edita um ponto de monitoramento
+
+```
+PUT/monitor/:id
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `latitude` | `string` |   latitude do ponto |
+| `longitude` | `string` |  longitude do ponto  |
+
+  Corpo da resposta: <br/>
+  
+  ```json
+{
+	"id": 5,
+	"pedidoId": 1,
+	"droneId": 1,
+	"latitude": "19.000",
+	"longitude": "19.000"
+}
+```
+
+ :white_check_mark: STATUS 200 OK
+
+- Deleta um ponto de monitoramento
+
+```
+DELETE/monitor/:id
+```
+ :white_check_mark: STATUS 204 NO CONTENT
+
+ - Deleta o monitoramento de um pedido
+
+```
+DELETE/monitor/order/:pedidoid
+```
+ :white_check_mark: STATUS 204 NO CONTENT
+ 
+</details>
