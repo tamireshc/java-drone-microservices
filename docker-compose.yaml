@@ -1,0 +1,129 @@
+networks:
+  msdrones-network:
+
+services:
+  # Eureka Server
+  ms-eureka-server:
+    build: ./eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - rabbitmq
+    networks:
+      - msdrones-network
+
+  # API Gateway
+  gateway:
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ms-eureka-server
+      - rabbitmq
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
+    networks:
+      - msdrones-network
+
+  # Microserviço Gerenciador Cadastros
+  ms-gerenciador-cadastros:
+    build: ./ms-gerenciador-cadastros
+    depends_on:
+      - db1
+      - ms-eureka-server
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db1:5432/gerenciador-cadastros
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
+      - SERVER_PORT=${SERVER_PORT:-0}
+    networks:
+      - msdrones-network
+
+  # Microserviço Gerenciador de Pedidos
+  ms-gerenciador-pedidos:
+    build: ./ms-gerenciador-pedidos
+    depends_on:
+      - db2
+      - ms-eureka-server
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db2:5433/gerenciador-pedidos
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
+      - SERVER_PORT=${SERVER_PORT:-0}
+    networks:
+      - msdrones-network
+
+  # Microserviço Monitoramento
+  ms-monitoramento:
+    build: ./ms-monitoramento
+    depends_on:
+      - db3
+      - ms-eureka-server
+      - rabbitmq
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db3:5434/monitoramento
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
+      - SERVER_PORT=${SERVER_PORT:-0}
+    networks:
+      - msdrones-network
+
+  # Microserviço Notificador
+  ms-notificador:
+    build: ./ms-notificador
+    depends_on:
+      - ms-eureka-server
+      - rabbitmq
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
+      - SERVER_PORT=${SERVER_PORT:-0}
+    networks:
+      - msdrones-network
+
+  # Banco de dados PostgreSQL para o ms1
+  db1:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=ms1db
+    networks:
+      - msdrones-network
+
+  # Banco de dados PostgreSQL para o ms2
+  db2:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=ms2db
+    networks:
+      - msdrones-network
+
+  # Banco de dados PostgreSQL para o ms3
+  db3:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=ms3db
+    networks:
+      - msdrones-network
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - msdrones-network

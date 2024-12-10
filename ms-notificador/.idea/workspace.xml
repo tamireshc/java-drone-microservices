@@ -5,7 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aad03814-7b75-4cfa-99eb-cd0bb4f5ca2c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/PedidoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/java/com/example/ms_gerenciador_pedidos/service/PedidoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gateway/src/main/resources/application-prod.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ms-gerenciador-cadastros/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application-prod.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application-prod.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application-prod.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/aplication-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
