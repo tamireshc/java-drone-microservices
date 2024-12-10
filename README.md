@@ -1,9 +1,14 @@
-# drone-microservices
-## 🔧​ Em Construção 🔧​
-O Drone-Microservices é um sistema de microserviços para entregas de pacotes utilizando Drones.<br>
-(...)
-<br>
-Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada microserviço possui o seu banco de dados<br>
+# Drone-Microservices
+
+:pushpin: O Drone-Microservices é um sistema de microserviços para gerenciameto de entregas por drones.<br><br>
+ Para este projeto, definimos a criação de quatro microserviços, cada um com uma responsabilidade específica: <br>
+
+- O primeiro é o Gerenciador de Cadastros, encarregado do gerenciamento dos dados cadastrais dos usuários, dos endereços de entrega e dos drones adicionados ao sistema. <br>
+- O segundo microserviço é o Gerenciador de Pedidos, responsável por gerenciar as informações relacionadas a cada pedido, incluindo a data da solicitação, o seu status, o remetente e o destinatário.<br> 
+- O terceiro microserviço, denominado Monitoramento de Drones, é responsável por acompanhar a posição de cada drone associado a um pedido.<br>
+- O quarto microserviço, chamado Notificador, é encarregado de enviar notificações aos usuários, informando-os sobre o status de seus pedidos.<br>
+	
+:black_nib: Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada microserviço possui o seu banco de dados<br>
 
 ## :mag: Tecnologias utilizadas
 - Construção da API - [Java](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) e [Spring Boot](https://spring.io/projects/spring-boot)<br>
@@ -13,6 +18,14 @@ Todas essas informações são armazenadas em bancos de dados PostgreSQL, cada m
 ## 🕵 Diagrama UML da API <br>
 
 ![drones drawio](https://github.com/user-attachments/assets/414ee0c9-b5c4-4bba-843f-050befab75fe)
+
+ ## 📋 Execute o projeto em sua máquina com docker em dev mode
+
+Clone o repositório:
+
+```
+git clone 
+```
 
 ## 🔎 Documentação da API
 <details>
