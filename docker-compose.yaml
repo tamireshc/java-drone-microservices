@@ -1,10 +1,8 @@
-version: "3.9" # Versão do Docker Compose
-
 networks:
   msdrones-network:
+    driver: bridge
 
 services:
-  # Eureka Server
   ms-eureka-server:
     container_name: ms-eureka-server
     build: ./eureka-server
@@ -15,7 +13,6 @@ services:
     networks:
       - msdrones-network
 
-  # API Gateway
   gateway:
     container_name: gateway
     build: ./gateway
@@ -25,124 +22,130 @@ services:
       - ms-eureka-server
       - rabbitmq
     environment:
+      - SPRING_PROFILES_ACTIVE=prod
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
     networks:
       - msdrones-network
 
-  # Microserviço Gerenciador Cadastros
   ms-gerenciador-cadastros:
     container_name: ms-gerenciador-cadastros
     build: ./ms-gerenciador-cadastros
     depends_on:
-      - db-gerenciador-cadastros # Nome do serviço do banco de dados corrigido
+      - db-gerenciador-cadastros
       - ms-eureka-server
       - rabbitmq
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-cadastros:5432/gerenciador-cadastros # Host corrigido
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-cadastros:5432/gerenciador-cadastros
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123 # Lembre-se de usar uma senha forte em produção!
+      - SPRING_DATASOURCE_PASSWORD=123
       - SPRING_RABBITMQ_HOST=rabbitmq
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
     networks:
       - msdrones-network
 
-  # Microserviço Gerenciador de Pedidos
   ms-gerenciador-pedidos:
     container_name: ms-gerenciador-pedidos
     build: ./ms-gerenciador-pedidos
     depends_on:
-      - db-gerenciador-pedidos # Nome do serviço do banco de dados corrigido
+      - db-gerenciador-pedidos
       - ms-eureka-server
       - rabbitmq
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-pedidos:5433/gerenciador-pedidos # Host corrigido
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-pedidos:5433/gerenciador-pedidos
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123 # Lembre-se de usar uma senha forte em produção!
+      - SPRING_DATASOURCE_PASSWORD=123
       - SPRING_RABBITMQ_HOST=rabbitmq
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
     networks:
       - msdrones-network
 
-  # Microserviço Monitoramento
   ms-monitoramento:
     container_name: ms-monitoramento
     build: ./ms-monitoramento
     depends_on:
-      - db-monitoramento # Nome do serviço do banco de dados corrigido
+      - db-monitoramento
       - ms-eureka-server
       - rabbitmq
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-monitoramento:5434/monitoramento # Host corrigido
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-monitoramento:5434/monitoramento
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123 # Lembre-se de usar uma senha forte em produção!
+      - SPRING_DATASOURCE_PASSWORD=123
       - SPRING_RABBITMQ_HOST=rabbitmq
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
     networks:
       - msdrones-network
 
-  # Microserviço Notificador
   ms-notificador:
     container_name: ms-notificador
     build: ./ms-notificador
     depends_on:
-      - ms-eureka-server
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - ./ms-notificador/.env
     environment:
+      - SPRING_PROFILES_ACTIVE=prod
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
     networks:
       - msdrones-network
 
-  # Banco de dados PostgreSQL para o ms-gerenciador-cadastros
   db-gerenciador-cadastros:
-    container_name: db-gerenciador-cadastros # Nome do serviço mais descritivo
+    container_name: db-gerenciador-cadastros
     image: postgres:14-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123 # Lembre-se de usar uma senha forte em produção!
+      - POSTGRES_PASSWORD=123
       - POSTGRES_DB=gerenciador-cadastros
     networks:
       - msdrones-network
     ports:
       - "5432:5432"
 
-  # Banco de dados PostgreSQL para o ms-gerenciador-pedidos
   db-gerenciador-pedidos:
-    container_name:
-      db-gerenciador-pedidos
-      # Nome do serviço mais descritivo
+    container_name: db-gerenciador-pedidos
     image: postgres:14-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123 # Lembre-se de usar uma senha forte em produção!
+      - POSTGRES_PASSWORD=123
       - POSTGRES_DB=gerenciador-pedidos
     networks:
       - msdrones-network
     ports:
       - "5433:5433"
 
-  # Banco de dados PostgreSQL para o ms-monitoramento
   db-monitoramento:
-    container_name: db-monitoramento # Nome do serviço mais descritivo
+    container_name: db-monitoramento
     image: postgres:14-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123 # Lembre-se de usar uma senha forte em produção!
+      - POSTGRES_PASSWORD=123
       - POSTGRES_DB=monitoramento
     networks:
       - msdrones-network
     ports:
       - "5434:5434"
 
-  # RabbitMQ
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - msdrones-network
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status > /dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
