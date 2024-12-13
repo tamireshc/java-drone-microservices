@@ -19,12 +19,19 @@
 
 ![drones drawio](https://github.com/user-attachments/assets/414ee0c9-b5c4-4bba-843f-050befab75fe)
 
- ## 📋 Execute o projeto em sua máquina com docker em dev mode
+ ## 📋 Execute o projeto em sua máquina com docker compose
 
 Clone o repositório:
 
 ```
-git clone 
+git clone https://github.com/tamireshc/java-drone-microservices.git
+```
+:bookmark: Adicione os valores de AWS_ACCESS_KEY e  AWS_SECRET_KEY em um arquivo .env na raiz no MS-Notificador. <br>
+:bookmark: Configure o Amazon SNS na AWS.
+
+#### Execute:
+```
+docker compose up -d 
 ```
 
 ## 🔎 Documentação da API
