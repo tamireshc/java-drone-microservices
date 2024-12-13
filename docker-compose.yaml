@@ -31,14 +31,13 @@ services:
     container_name: ms-gerenciador-cadastros
     build: ./ms-gerenciador-cadastros
     depends_on:
-      - db-gerenciador-cadastros
-      - ms-eureka-server
-      - rabbitmq
+      db-gerenciador-cadastros:
+        condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-cadastros:5432/gerenciador-cadastros
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_DATASOURCE_PASSWORD=8j65*h90
       - SPRING_RABBITMQ_HOST=rabbitmq
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
@@ -49,14 +48,13 @@ services:
     container_name: ms-gerenciador-pedidos
     build: ./ms-gerenciador-pedidos
     depends_on:
-      - db-gerenciador-pedidos
-      - ms-eureka-server
-      - rabbitmq
+      db-gerenciador-pedidos:
+        condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-pedidos:5433/gerenciador-pedidos
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-pedidos:5432/gerenciador-pedidos
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_DATASOURCE_PASSWORD=8j65*h90
       - SPRING_RABBITMQ_HOST=rabbitmq
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
@@ -67,14 +65,13 @@ services:
     container_name: ms-monitoramento
     build: ./ms-monitoramento
     depends_on:
-      - db-monitoramento
-      - ms-eureka-server
-      - rabbitmq
+      db-monitoramento:
+        condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-monitoramento:5434/monitoramento
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-monitoramento:5432/monitoramento
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_DATASOURCE_PASSWORD=8j65*h90
       - SPRING_RABBITMQ_HOST=rabbitmq
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka-server:8761/eureka/
       - SERVER_PORT=${SERVER_PORT:-0}
@@ -105,36 +102,51 @@ services:
     image: postgres:14-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123
+      - POSTGRES_PASSWORD=8j65*h90
       - POSTGRES_DB=gerenciador-cadastros
     networks:
       - msdrones-network
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -p 5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   db-gerenciador-pedidos:
     container_name: db-gerenciador-pedidos
     image: postgres:14-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123
+      - POSTGRES_PASSWORD=8j65*h90
       - POSTGRES_DB=gerenciador-pedidos
     networks:
       - msdrones-network
     ports:
-      - "5433:5433"
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -p 5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   db-monitoramento:
     container_name: db-monitoramento
     image: postgres:14-alpine
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123
+      - POSTGRES_PASSWORD=8j65*h90
       - POSTGRES_DB=monitoramento
     networks:
       - msdrones-network
     ports:
-      - "5434:5434"
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -p 5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   rabbitmq:
     container_name: rabbitmq

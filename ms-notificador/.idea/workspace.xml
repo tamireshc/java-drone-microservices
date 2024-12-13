@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aad03814-7b75-4cfa-99eb-cd0bb4f5ca2c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-cadastros/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-cadastros/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-cadastros/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-gerenciador-pedidos/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../ms-monitoramento/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/aplication-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/aplication-prod.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
