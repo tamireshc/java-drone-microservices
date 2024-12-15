@@ -27,8 +27,8 @@ Clone o repositório:
 git clone https://github.com/tamireshc/java-drone-microservices.git
 ```
 :bookmark: Adicione os valores de AWS_ACCESS_KEY e  AWS_SECRET_KEY em um arquivo .env na raiz no MS-Notificador. <br>
-:bookmark: Configure o Amazon SNS na AWS.
-:bookmark: Adicione a API_KEY da API distancematrix.ai na raiz do ms-gerenciador-cadastros
+:bookmark: Configure o Amazon SNS na AWS.<br>
+:bookmark: Adicione a API_KEY da API distancematrix.ai na raiz do ms-gerenciador-cadastros.
 
 #### Execute:
 ```
