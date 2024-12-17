@@ -50,6 +50,8 @@ services:
     depends_on:
       db-gerenciador-pedidos:
         condition: service_healthy
+    env_file:
+      - ./ms-gerenciador-cadastros/.env
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-gerenciador-pedidos:5432/gerenciador-pedidos
